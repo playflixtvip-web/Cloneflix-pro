@@ -399,7 +399,7 @@ function renderizar(cats,streams,tipo){
   for(const id in history){
     const h=history[id];if(h.tipo!==tipo)continue;
     const item=tipo==="series"?streams.find(s=>String(s.series_id)===String(h.seriesParentId)):streams.find(s=>String(s.stream_id)===String(id));
-    if(item&&!cont.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.series_id)))cont.push(item);
+    if(item&&!cont.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.stream_id)))cont.push(item);
   }
   if(cont.length)html+=`<div class="row"><div class="row-header"><span class="row-title" style="color:var(--yellow)">CONTINUAR ASSISTINDO</span><button class="btn-ver-mais" onclick="verMaisHistorico('${tipo}')">VER MAIS</button></div><div class="shelf">${cont.slice(0,10).map(i=>cardHtml(i,tipo)).join("")}</div></div>`;
   (cats||[]).forEach(cat=>{
@@ -414,7 +414,7 @@ function verMaisHistorico(tipo){
   for(const id in history){
     const h=history[id];if(h.tipo!==tipo)continue;
     const item=tipo==="series"?streams.find(s=>String(s.series_id)===String(h.seriesParentId)):streams.find(s=>String(s.stream_id)===String(id));
-    if(item&&!items.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.stream_id)))items.push(item);
+    if(item&&!items.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.series_id)))items.push(item);
   }
   document.getElementById("conteudo-principal").innerHTML=`<div class="row-header" style="padding:15px"><button onclick="mudarSecao(secaoAtual)" style="background:none;border:0;color:white;font-size:22px">←</button><span class="row-title">CONTINUAR ASSISTINDO</span></div><div class="grid-view">${items.map(i=>cardHtml(i,tipo)).join("")}</div>`;scrollTo(0,0);
 }
@@ -469,18 +469,45 @@ function prepararEp(id,ext,parent,season,title){
 
 function fecharModalEscolha(){document.getElementById("modal-escolha-ep").style.display="none"}
 
-async function play(id,ext,tipo,startTime=0,parent=null,season=null){
-  currentPlayingId=String(id);currentPlayingType=tipo;currentSeriesParent=parent;currentSeason=season;
-  const url=tipo==="live"?`${API.url}/live/${API.u}/${API.p}/${id}.m3u8`:tipo==="movie"?`${API.url}/movie/${API.u}/${API.p}/${id}.${ext||"mp4"}`:`${API.url}/series/${API.u}/${API.p}/${id}.${ext||"mp4"}`;
-  document.getElementById("jump-btns-ui").style.visibility=tipo==="live"?"hidden":"visible";
-  document.getElementById("next-ep-btn-ui").style.display="none";
+// FUNÇÃO DE PLAYER COM SUPORTE TOTAL A MÚLTIPLOS FORMATOS (LIVE, M3U8, MP4, MKV)
+async function play(id, ext, tipo, startTime = 0, parent = null, season = null) {
+  currentPlayingId = String(id);
+  currentPlayingType = tipo;
+  currentSeriesParent = parent;
+  currentSeason = season;
+
+  // Garante a extensão correta ou usa mp4/ts como padrão universal tolerante
+  let formatoExt = ext ? ext.toLowerCase() : "mp4";
+  if (tipo === "live") formatoExt = "m3u8";
+
+  const url = tipo === "live" 
+    ? `${API.url}/live/${API.u}/${API.p}/${id}.${formatoExt}` 
+    : tipo === "movie" 
+    ? `${API.url}/movie/${API.u}/${API.p}/${id}.${formatoExt}` 
+    : `${API.url}/series/${API.u}/${API.p}/${id}.${formatoExt}`;
+
+  document.getElementById("jump-btns-ui").style.visibility = tipo === "live" ? "hidden" : "visible";
+  document.getElementById("next-ep-btn-ui").style.display = "none";
+  
   await solicitarWakeLock();
-  document.getElementById("player-box").style.display="block";
-  player.src(tipo==="live"?{src:url,type:"application/x-mpegURL"}:{src:url});
-  player.one("loadedmetadata",()=>{if(startTime>0)try{player.currentTime(startTime)}catch(e){}});
-  player.play().catch(()=>{});
-  if(saveInterval)clearInterval(saveInterval);
-  if(tipo!=="live")saveInterval=setInterval(salvarProgressoFirebase,8000);
+  document.getElementById("player-box").style.display = "block";
+
+  // Configuração mime-type inteligente para aceitar múltiplos formatos no Video.js
+  let mimeType = "video/mp4";
+  if (formatoExt === "m3u8" || tipo === "live") mimeType = "application/x-mpegURL";
+  else if (formatoExt === "ts") mimeType = "video/mp2t";
+  else if (formatoExt === "mkv") mimeType = "video/x-matroska";
+
+  player.src({ src: url, type: mimeType });
+  
+  player.one("loadedmetadata", () => {
+    if (startTime > 0) try { player.currentTime(startTime); } catch (e) {}
+  });
+  
+  player.play().catch(() => {});
+
+  if (saveInterval) clearInterval(saveInterval);
+  if (tipo !== "live") saveInterval = setInterval(salvarProgressoFirebase, 8000);
 }
 
 player.on("timeupdate",()=>{
