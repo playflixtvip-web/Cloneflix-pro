@@ -37,7 +37,7 @@ header{padding:18px 24px 10px}.header-top{display:flex;align-items:center;justif
 #login-ui{min-height:100vh;background:radial-gradient(ellipse at 50% 25%,#e5091426,transparent 45%),#07080b}
 #login-ui>div{padding:24px!important}#login-ui>div>div{width:100%!important;max-width:390px!important;padding:36px 28px!important;background:#12141bf5!important;border:1px solid #ffffff1a!important;border-radius:20px!important;box-shadow:0 25px 80px #0009}
 #login-ui h1{font-size:32px;font-weight:1000;letter-spacing:-1.5px;text-shadow:0 0 30px #e5091433}
-#login-status{line-height:1.6}#login-ui button{cursor:pointer;background:linear-gradient(135deg,#f20d19,#b50710)!important;border-radius:10px!important;box-shadow:0 6px 18px #e5091433}
+#login-status{line-height:1.6}#login-ui button{cursor:pointer;border-radius:10px!important;font-weight:bold}
 .input-adm{width:100%;padding:13px 14px;margin-bottom:12px;background:#191c25;border:1px solid #ffffff17;color:white;border-radius:9px;font-size:13px;transition:border-color .2s,box-shadow .2s}
 .input-adm::placeholder{color:#828795}.input-adm:focus{outline:none;border-color:#e50914bf;box-shadow:0 0 0 3px #e509141a}
 .user-card,.config-section{background:linear-gradient(145deg,#171a22,#101218);padding:17px;border-radius:13px;margin-bottom:12px;border:1px solid var(--border);font-size:12px;line-height:1.9;box-shadow:0 5px 18px #0002;overflow-wrap:anywhere}
@@ -65,7 +65,7 @@ header{padding:18px 24px 10px}.header-top{display:flex;align-items:center;justif
       <h1 style="color:var(--red);margin-bottom:5px">CLONEFLIX</h1>
       <div id="login-status" style="font-size:11px;margin-bottom:15px;color:var(--yellow)">Aguardando credenciais...</div>
       
-      <!-- Formulário de Login por E-mail e Senha do Cliente -->
+      <!-- Login Form -->
       <div id="form-login-box">
         <input type="email" id="user" placeholder="E-mail" class="input-adm" autocomplete="username">
         <input type="password" id="pass" placeholder="Senha" class="input-adm" autocomplete="current-password">
@@ -73,7 +73,7 @@ header{padding:18px 24px 10px}.header-top{display:flex;align-items:center;justif
         <button onclick="alternarTelaRegistro(true)" style="width:100%;padding:10px;background:transparent;color:#aaa;border:1px solid #444;border-radius:5px;font-size:11px">Quero Testar Grátis (24h)</button>
       </div>
 
-      <!-- Formulário de Registro Grátis -->
+      <!-- Registro Form (24h de Teste) -->
       <div id="form-registro-box" style="display:none">
         <input type="email" id="reg-user" placeholder="Digite seu E-mail" class="input-adm">
         <input type="password" id="reg-pass" placeholder="Crie uma Senha" class="input-adm">
@@ -113,7 +113,7 @@ header{padding:18px 24px 10px}.header-top{display:flex;align-items:center;justif
 
 <div id="modal-config" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><div style="max-width:440px;margin:50px auto"><h3 style="color:var(--red);text-align:center">CONFIGURAÇÕES</h3><div class="config-section"><h4 style="margin-top:0">Alterar senha</h4><input type="password" id="cfg-pass-atual" placeholder="Senha atual" class="input-adm"><input type="password" id="cfg-pass-nova" placeholder="Nova senha" class="input-adm"><input type="password" id="cfg-pass-conf" placeholder="Confirmar nova senha" class="input-adm"><button onclick="redefinirSenha()" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">ATUALIZAR SENHA</button></div><div class="config-section"><h4 style="margin-top:0">Privacidade</h4><p style="font-size:12px;color:#aaa">Remove os itens da fileira Continuar Assistindo.</p><button onclick="limparHistorico()" class="btn-danger">LIMPAR HISTÓRICO</button></div></div></div>
 
-<div id="modal-adm" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><h3 style="color:var(--red);text-align:center">PAINEL GESTOR</h3><div style="max-width:650px;margin:25px auto"><div class="config-section" id="adm-form"><h4 style="margin:0 0 12px;color:var(--red)">SERVIDOR IPTV (SUPORTA HTTP OU HTTPS)</h4><input type="text" id="adm-url" placeholder="URL DNS (ex: http://exemplo.com:80)" class="input-adm"><input type="text" id="adm-u" placeholder="Usuário IPTV" class="input-adm"><input type="password" id="adm-p" placeholder="Senha IPTV" class="input-adm"><button onclick="salvarConfigServidor()" style="width:100%;padding:12px;background:#27ae60;color:#fff;border:0;border-radius:9px;font-weight:bold">ATUALIZAR DNS</button></div><div class="config-section"><h4 style="margin:0 0 12px">GERENCIAR CLIENTES E DIAS</h4><input type="hidden" id="edit-id"><input type="email" id="new-u" placeholder="E-mail do Cliente" class="input-adm"><input type="text" id="new-p" placeholder="Senha" class="input-adm"><input type="text" id="new-exp-data" placeholder="Vencimento (dd/mm/aaaa)" class="input-adm"><input type="number" id="new-screens" placeholder="Limite de telas" class="input-adm" value="1"><button onclick="salvarUsuario()" id="btn-save-adm" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">SALVAR CLIENTE</button></div><div id="lista-usuarios-adm"></div></div></div>
+<div id="modal-adm" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><h3 style="color:var(--red);text-align:center">PAINEL GESTOR</h3><div style="max-width:650px;margin:25px auto"><div class="config-section"><h4 style="margin:0 0 12px;color:var(--red)">SERVIDOR IPTV (LIDO DO FIREBASE)</h4><input type="text" id="adm-url" placeholder="URL DNS" class="input-adm" readonly style="opacity:0.7"><input type="text" id="adm-u" placeholder="Usuário IPTV" class="input-adm" readonly style="opacity:0.7"><input type="password" id="adm-p" placeholder="Senha IPTV" class="input-adm" readonly style="opacity:0.7"><small style="color:#aaa;display:block;margin-top:-5px;margin-bottom:10px">Para alterar o servidor, modifique o nó <b>config/server</b> diretamente no seu Firebase Console.</small></div><div class="config-section"><h4 style="margin:0 0 12px">GERENCIAR CLIENTES E DIAS</h4><input type="hidden" id="edit-id"><input type="email" id="new-u" placeholder="E-mail do Cliente" class="input-adm"><input type="text" id="new-p" placeholder="Senha" class="input-adm"><input type="number" id="new-days" placeholder="Adicionar dias de acesso (Ex: 30)" class="input-adm"><input type="number" id="new-screens" placeholder="Limite de telas" class="input-adm" value="1"><button onclick="salvarUsuario()" id="btn-save-adm" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">SALVAR CLIENTE</button></div><div id="lista-usuarios-adm"></div></div></div>
 
 <div id="modal-detalhes" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><div id="detalhes-body" style="text-align:center;max-width:500px;margin:40px auto;padding-bottom:50px"></div></div>
 <div id="modal-escolha-ep" class="modal" style="z-index:1100;background:#000f"><span class="close-modal" onclick="fecharModalEscolha()">✕</span><div id="escolha-body" style="text-align:center;margin:30vh auto 0;max-width:420px;padding:20px"></div></div>
@@ -121,33 +121,26 @@ header{padding:18px 24px 10px}.header-top{display:flex;align-items:center;justif
 
 <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
 <script>
-const FIREBASE = "https://cloneflix-oficial-default-rtdb.firebaseio.com";
+const FIREBASE = "https://clonenovo-default-rtdb.firebaseio.com";
 const DB = `${FIREBASE}/usuarios`;
-let API = {url: "", u: "", p: ""};
 
-const player = videojs("vid");
-const jumpContainer = document.createElement("div");
-jumpContainer.className = "vjs-custom-jump-container"; jumpContainer.id = "jump-btns-ui";
-jumpContainer.innerHTML = '<button class="jump-btn-inner" onclick="pularTempo(-10)"><span>↺</span>10s</button><button class="jump-btn-inner" onclick="pularTempo(10)"><span>↻</span>10s</button>';
+const player=videojs("vid");
+const jumpContainer=document.createElement("div");
+jumpContainer.className="vjs-custom-jump-container";jumpContainer.id="jump-btns-ui";
+jumpContainer.innerHTML='<button class="jump-btn-inner" onclick="pularTempo(-10)"><span>↺</span>10s</button><button class="jump-btn-inner" onclick="pularTempo(10)"><span>↻</span>10s</button>';
 player.el().appendChild(jumpContainer);
 
-const nextEpBtn = document.createElement("button");
-nextEpBtn.className = "vjs-next-ep-btn";
-nextEpBtn.id = "next-ep-btn-ui";
-nextEpBtn.innerHTML = 'Próximo Episódio ⏭';
-nextEpBtn.onclick = () => irParaProximoEpisodio();
+const nextEpBtn=document.createElement("button");
+nextEpBtn.className="vjs-next-ep-btn";
+nextEpBtn.id="next-ep-btn-ui";
+nextEpBtn.innerHTML='Próximo Episódio ⏭';
+nextEpBtn.onclick=()=>irParaProximoEpisodio();
 player.el().appendChild(nextEpBtn);
 
-let fullData = {}, cacheCategorias = {}, currentLogged = {}, secaoAtual = "live", saveInterval = null, relogioInterval = null, wakeLock = null, currentPlayingId = null, currentPlayingType = null, currentSeriesParent = null, currentSeason = null, monitorSessaoInterval = null, currentSeriesEpisodesData = null;
+let fullData={},cacheCategorias={},currentLogged={},secaoAtual="live",saveInterval=null,relogioInterval=null,wakeLock=null,currentPlayingId=null,currentPlayingType=null,currentSeriesParent=null,currentSeason=null,monitorSessaoInterval=null,currentSeriesEpisodesData=null;
+let API={url:"",u:"",p:""};
 
-function obterDeviceId(){
-  let id = localStorage.getItem("clone_device_id");
-  if(!id){
-    id = "dev_" + Math.random().toString(36).slice(2,11) + Date.now();
-    localStorage.setItem("clone_device_id", id);
-  }
-  return id;
-}
+function obterDeviceId(){let id=localStorage.getItem("clone_device_id");if(!id){id="dev_"+Math.random().toString(36).slice(2,11)+Date.now();localStorage.setItem("clone_device_id",id)}return id}
 
 window.onload = async () => {
   await carregarConfigServidor();
@@ -162,8 +155,8 @@ window.onload = async () => {
   }
 };
 
-window.addEventListener("beforeunload", () => {if(currentPlayingType && currentPlayingType !== "live") salvarProgressoFirebase()});
-async function solicitarWakeLock(){try{if("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen")}catch(e){}}
+window.addEventListener("beforeunload",()=>{if(currentPlayingType&&currentPlayingType!=="live")salvarProgressoFirebase()});
+async function solicitarWakeLock(){try{if("wakeLock"in navigator)wakeLock=await navigator.wakeLock.request("screen")}catch(e){}}
 function liberarWakeLock(){if(wakeLock){wakeLock.release().then(()=>wakeLock=null).catch(()=>{})}}
 
 async function carregarConfigServidor(){
@@ -179,26 +172,6 @@ async function carregarConfigServidor(){
   }catch(e){}
 }
 
-async function salvarConfigServidor(){
-  if(!currentLogged.adm) return alert("Apenas administrador pode alterar o servidor.");
-  const nova = {
-    url: document.getElementById("adm-url").value.trim().replace(/\/$/, ""),
-    u: document.getElementById("adm-u").value.trim(),
-    p: document.getElementById("adm-p").value.trim()
-  };
-  try{
-    const r = await fetch(`${FIREBASE}/config/server.json`, {
-      method: "PUT",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(nova)
-    });
-    if(!r.ok) throw Error();
-    API = nova;
-    fullData = {}; cacheCategorias = {};
-    alert("Configurações do servidor atualizadas!");
-  }catch(e){alert("Não foi possível salvar a configuração.")}
-}
-
 function alternarTelaRegistro(mostrar){
   document.getElementById("form-login-box").style.display = mostrar ? "none" : "block";
   document.getElementById("form-registro-box").style.display = mostrar ? "block" : "none";
@@ -209,7 +182,7 @@ function validarEmail(email) {
   return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 }
 
-// Validação de vencimento no formato exato dd/mm/aaaa
+// Converte explicitamente a string 'dd/mm/aaaa' para o fim do dia correspondente em milissegundos
 function verificarSeVenceu(expiraStr) {
   if (!expiraStr) return false;
   const partes = expiraStr.split('/');
@@ -218,8 +191,11 @@ function verificarSeVenceu(expiraStr) {
   const mes = parseInt(partes[1], 10) - 1;
   const ano = parseInt(partes[2], 10);
   
+  // Data de vencimento no último segundo do dia (23:59:59)
   const dataVencimento = new Date(ano, mes, dia, 23, 59, 59).getTime();
-  return Date.now() > dataVencimento;
+  const agora = Date.now();
+
+  return agora > dataVencimento; // Retorna true se já passou da data de vencimento
 }
 
 async function cadastrarTesteGratis(){
@@ -281,27 +257,19 @@ async function cadastrarTesteGratis(){
   }
 }
 
-async function autenticar(isAuto = false){
-  const u = document.getElementById("user").value.trim().toLowerCase();
-  const p = document.getElementById("pass").value.trim();
-  const status = document.getElementById("login-status");
-  const deviceId = obterDeviceId();
-
-  if(!u || !p){
-    if(!isAuto) status.innerText = "Informe e-mail e senha.";
-    return;
-  }
-  status.innerText = "Verificando acesso...";
-
+async function autenticar(isAuto=false){
+  const u = document.getElementById("user").value.trim().toLowerCase(), p = document.getElementById("pass").value.trim(), status = document.getElementById("login-status"), deviceId = obterDeviceId();
+  if(!u||!p){if(!isAuto)status.innerText="Informe e-mail e senha.";return}
+  status.innerText="Verificando acesso...";
   try{
     const r = await fetch(`${DB}.json`);
     if(!r.ok) throw Error();
     const res = await r.json();
     let found = false;
 
-    for(const id in (res || {})){
+    for(const id in (res||{})){
       const user = res[id];
-      if((user.user || "").toLowerCase() === u && user.pass === p){
+      if((user.user||"").toLowerCase() === u && user.pass === p){
         found = true;
         if(user.role === "admin"){
           currentLogged = {...user, adm: true, id};
@@ -311,6 +279,7 @@ async function autenticar(isAuto = false){
             return alert("Sua conta está bloqueada.");
           }
 
+          // Verificação estrita baseada exclusivamente na string dd/mm/aaaa cadastrada
           if(verificarSeVenceu(user.expira)){
             status.innerText = "ACESSO VENCIDO";
             return alert("Sua conta venceu em " + (user.expira || "data passada") + ". O acesso não é permitido.");
@@ -319,14 +288,17 @@ async function autenticar(isAuto = false){
           let devices = Array.isArray(user.active_devices) ? [...user.active_devices] : [];
           const maxTelas = Number(user.screens) || 1;
 
+          // Se este dispositivo ainda não está logado
           if(!devices.includes(deviceId)){
+            // Remove dispositivos fantasmas/antigos se necessário ou valida estritamente o limite exato
             if(devices.length >= maxTelas){
-              status.innerText = "LIMITE DE TELAS";
-              return alert(`Limite de telas atingido (${maxTelas} tela(s)). Feche o aplicativo em outro aparelho para entrar.`);
+              status.innerText = "LIMITE DE TELAS ATINGIDO";
+              return alert(`Limite de telas atingido (${maxTelas} tela(s) permitida(s)). Saia de outro aparelho para poder conectar aqui.`);
             }
             devices.push(deviceId);
           } else {
-            if(devices.length > maxTelas){
+            // Se já está na lista, garante que o tamanho não ultrapasse o limite caso o admin tenha alterado
+            if(devices.length > maxTelas) {
               devices = devices.slice(-maxTelas);
             }
           }
@@ -354,189 +326,183 @@ async function autenticar(isAuto = false){
 }
 
 function entrar(){
-  document.getElementById("login-ui").style.display = "none";
-  document.getElementById("app-ui").style.display = "block";
-  document.getElementById("adm-btn").style.display = currentLogged.adm ? "block" : "none";
-  const venc = currentLogged.role === "admin" ? "VITALÍCIO" : (currentLogged.expira || "Vitalício");
-  if(relogioInterval) clearInterval(relogioInterval);
+  document.getElementById("login-ui").style.display="none";
+  document.getElementById("app-ui").style.display="block";
+  document.getElementById("adm-btn").style.display=currentLogged.adm?"block":"none";
+  const venc = currentLogged.role==="admin" ? "VITALÍCIO" : (currentLogged.expira || "Vitalício");
+  if(relogioInterval)clearInterval(relogioInterval);
   atualizarRelogio(venc);
-  relogioInterval = setInterval(() => atualizarRelogio(venc), 1000);
-  if(monitorSessaoInterval) clearInterval(monitorSessaoInterval);
-  monitorSessaoInterval = setInterval(verificarSessaoAtiva, 20000);
-  mudarSecao("live", document.querySelector(".btn-secao"));
+  relogioInterval=setInterval(()=>atualizarRelogio(venc),1000);
+  if(monitorSessaoInterval)clearInterval(monitorSessaoInterval);
+  monitorSessaoInterval=setInterval(verificarSessaoAtiva,20000);
+  mudarSecao("live",document.querySelector(".btn-secao"))
 }
 
 async function verificarSessaoAtiva(){
-  if(!currentLogged.id || currentLogged.role === "admin") return;
+  if(!currentLogged.id||currentLogged.role==="admin")return;
   try{
-    const r = await fetch(`${DB}/${currentLogged.id}.json`);
-    const res = await r.json();
-    const device = obterDeviceId();
+    const r=await fetch(`${DB}/${currentLogged.id}.json`),res=await r.json(),device=obterDeviceId();
 
-    if(!res || res.status === "bloqueado" || res.status === "suspenso" || verificarSeVenceu(res.expira) || !Array.isArray(res.active_devices) || !res.active_devices.includes(device)){
+    if(!res||res.status==="bloqueado"||res.status==="suspenso"||verificarSeVenceu(res.expira)||!Array.isArray(res.active_devices)||!res.active_devices.includes(device)){
       forceLogout();
     }
   }catch(e){}
 }
 
-function forceLogout(){localStorage.removeItem("clone_creds"); location.reload();}
-function atualizarRelogio(v){
-  const d = new Date(), dias = ["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
-  document.getElementById("welcome-msg").innerHTML = `Olá, <b>${escapeHtml(currentLogged.user||"usuário")}</b> | Vence em: <span>${v}</span><br><small style="color:#888;font-size:10px">${dias[d.getDay()]}, ${d.toLocaleDateString("pt-BR")} - ${d.toLocaleTimeString("pt-BR")}</small>`;
-}
+function forceLogout(){localStorage.removeItem("clone_creds");location.reload()}
+function atualizarRelogio(v){const d=new Date(),dias=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];document.getElementById("welcome-msg").innerHTML=`Olá, <b>${escapeHtml(currentLogged.user||"usuário")}</b> | Vence em: <span>${v}</span><br><small style="color:#888;font-size:10px">${dias[d.getDay()]}, ${d.toLocaleDateString("pt-BR")} - ${d.toLocaleTimeString("pt-BR")}</small>`}
 function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function safeAttr(s){return String(s??"").replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/[\r\n]/g," ")}
 
-async function mudarSecao(tipo, btn){
-  secaoAtual = tipo;
-  const search = document.getElementById("main-search");
-  if(search) search.value = "";
-  if(btn){document.querySelectorAll(".btn-secao").forEach(b=>b.classList.remove("active")); btn.classList.add("active")}
-  if(fullData[tipo] && cacheCategorias[tipo]){renderizar(cacheCategorias[tipo], fullData[tipo], tipo); return}
-  const main = document.getElementById("conteudo-principal");
-  main.innerHTML = '<p style="text-align:center;padding:40px;color:var(--red)">Carregando biblioteca...</p>';
-  const catAct = tipo === "live" ? "get_live_categories" : tipo === "movie" ? "get_vod_categories" : "get_series_categories";
-  const streamAct = tipo === "live" ? "get_live_streams" : tipo === "movie" ? "get_vod_streams" : "get_series";
+async function mudarSecao(tipo,btn){
+  secaoAtual=tipo;
+  const search=document.getElementById("main-search");
+  if(search)search.value="";
+  if(btn){document.querySelectorAll(".btn-secao").forEach(b=>b.classList.remove("active"));btn.classList.add("active")}
+  if(fullData[tipo]&&cacheCategorias[tipo]){renderizar(cacheCategorias[tipo],fullData[tipo],tipo);return}
+  const main=document.getElementById("conteudo-principal");
+  main.innerHTML='<p style="text-align:center;padding:40px;color:var(--red)">Carregando biblioteca...</p>';
+  const catAct=tipo==="live"?"get_live_categories":tipo==="movie"?"get_vod_categories":"get_series_categories",streamAct=tipo==="live"?"get_live_streams":tipo==="movie"?"get_vod_streams":"get_series";
   try{
-    const [cr, sr] = await Promise.all([
+    const [cr,sr]=await Promise.all([
       fetch(`${API.url}/player_api.php?username=${encodeURIComponent(API.u)}&password=${encodeURIComponent(API.p)}&action=${catAct}`),
       fetch(`${API.url}/player_api.php?username=${encodeURIComponent(API.u)}&password=${encodeURIComponent(API.p)}&action=${streamAct}`)
     ]);
-    if(!cr.ok || !sr.ok) throw Error();
-    const cats = await cr.json(), streams = await sr.json();
-    if(!Array.isArray(cats) || !Array.isArray(streams)) throw Error();
-    fullData[tipo] = streams; cacheCategorias[tipo] = cats; renderizar(cats, streams, tipo);
-  }catch(e){main.innerHTML = '<p style="text-align:center;padding:35px;color:#aaa">Erro ao carregar IPTV. Verifique se a URL usa http:// corretamente e se o servidor está online.</p>'}
+    if(!cr.ok||!sr.ok)throw Error();
+    const cats=await cr.json(),streams=await sr.json();
+    if(!Array.isArray(cats)||!Array.isArray(streams))throw Error();
+    fullData[tipo]=streams;cacheCategorias[tipo]=cats;renderizar(cats,streams,tipo)
+  }catch(e){main.innerHTML='<p style="text-align:center;padding:35px;color:#aaa">Erro ao carregar IPTV. Verifique a configuração do servidor no Firebase.</p>'}
 }
 
-function renderizar(cats, streams, tipo){
-  let html = ""; const history = currentLogged.history || {}, cont = [];
+function renderizar(cats,streams,tipo){
+  let html="";const history=currentLogged.history||{},cont=[];
   for(const id in history){
-    const h = history[id]; if(h.tipo !== tipo) continue;
-    const item = tipo === "series" ? streams.find(s=>String(s.series_id)===String(h.seriesParentId)) : streams.find(s=>String(s.stream_id)===String(id));
-    if(item && !cont.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.stream_id))) cont.push(item);
+    const h=history[id];if(h.tipo!==tipo)continue;
+    const item=tipo==="series"?streams.find(s=>String(s.series_id)===String(h.seriesParentId)):streams.find(s=>String(s.stream_id)===String(id));
+    if(item&&!cont.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.stream_id)))cont.push(item)
   }
-  if(cont.length) html += `<div class="row"><div class="row-header"><span class="row-title" style="color:var(--yellow)">CONTINUAR ASSISTINDO</span><button class="btn-ver-mais" onclick="verMaisHistorico('${tipo}')">VER MAIS</button></div><div class="shelf">${cont.slice(0,10).map(i=>cardHtml(i,tipo)).join("")}</div></div>`;
+  if(cont.length)html+=`<div class="row"><div class="row-header"><span class="row-title" style="color:var(--yellow)">CONTINUAR ASSISTINDO</span><button class="btn-ver-mais" onclick="verMaisHistorico('${tipo}')">VER MAIS</button></div><div class="shelf">${cont.slice(0,10).map(i=>cardHtml(i,tipo)).join("")}</div></div>`;
   (cats||[]).forEach(cat=>{
-    const items = streams.filter(s=>String(s.category_id)===String(cat.category_id));
-    if(items.length) html += `<div class="row"><div class="row-header"><span class="row-title">${escapeHtml(cat.category_name)}</span><button class="btn-ver-mais" onclick="verMais('${safeAttr(cat.category_id)}','${safeAttr(cat.category_name)}')">VER MAIS</button></div><div class="shelf">${items.slice(0,10).map(i=>cardHtml(i,tipo)).join("")}</div></div>`;
+    const items=streams.filter(s=>String(s.category_id)===String(cat.category_id));
+    if(items.length)html+=`<div class="row"><div class="row-header"><span class="row-title">${escapeHtml(cat.category_name)}</span><button class="btn-ver-mais" onclick="verMais('${safeAttr(cat.category_id)}','${safeAttr(cat.category_name)}')">VER MAIS</button></div><div class="shelf">${items.slice(0,10).map(i=>cardHtml(i,tipo)).join("")}</div></div>`
   });
-  document.getElementById("conteudo-principal").innerHTML = html || '<p style="text-align:center;padding:35px;color:#aaa">Nenhum conteúdo encontrado.</p>';
+  document.getElementById("conteudo-principal").innerHTML=html||'<p style="text-align:center;padding:35px;color:#aaa">Nenhum conteúdo encontrado.</p>'
 }
 
 function verMaisHistorico(tipo){
-  const streams = fullData[tipo] || [], history = currentLogged.history || {}, items = [];
+  const streams=fullData[tipo]||[],history=currentLogged.history||{},items=[];
   for(const id in history){
-    const h = history[id]; if(h.tipo !== tipo) continue;
-    const item = tipo === "series" ? streams.find(s=>String(s.series_id)===String(h.seriesParentId)) : streams.find(s=>String(s.stream_id)===String(id));
-    if(item && !items.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.stream_id))) items.push(item);
+    const h=history[id];if(h.tipo!==tipo)continue;
+    const item=tipo==="series"?streams.find(s=>String(s.series_id)===String(h.seriesParentId)):streams.find(s=>String(s.stream_id)===String(id));
+    if(item&&!items.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.stream_id)))items.push(item)
   }
-  document.getElementById("conteudo-principal").innerHTML = `<div class="row-header" style="padding:15px"><button onclick="mudarSecao(secaoAtual)" style="background:none;border:0;color:white;font-size:22px">←</button><span class="row-title">CONTINUAR ASSISTINDO</span></div><div class="grid-view">${items.map(i=>cardHtml(i,tipo)).join("")}</div>`; scrollTo(0,0);
+  document.getElementById("conteudo-principal").innerHTML=`<div class="row-header" style="padding:15px"><button onclick="mudarSecao(secaoAtual)" style="background:none;border:0;color:white;font-size:22px">←</button><span class="row-title">CONTINUAR ASSISTINDO</span></div><div class="grid-view">${items.map(i=>cardHtml(i,tipo)).join("")}</div>`;scrollTo(0,0)
 }
 
-function cardHtml(i, tipo){
-  const id = String(i.stream_id||i.series_id||""), favs = currentLogged.favs||[], isFav = favs.some(f=>String(f.id)===id&&f.tipo===tipo), history = currentLogged.history||{};
-  let progress = false, seasonTag = "";
-  if(tipo === "series"){
-    const h = Object.values(history).find(x=>String(x.seriesParentId)===id&&x.tipo==="series");
-    if(h){progress = true; seasonTag = `<span class="badge-season">T${escapeHtml(h.season||"")}</span>`}
-  } else if(history[id]) progress = true;
-  const img = i.stream_icon||i.cover||i.img||i.movie_image||"", name = i.name||i.title||"Sem título";
-  return `<div class="card ${progress?"in-progress":""}">${progress?'<span class="badge-continue">CONTINUAR</span>':""}${seasonTag}<span class="fav-star ${isFav?"active":""}" title="Adicionar à minha lista" onclick="toggleFav(event,'${safeAttr(id)}','${tipo}','${safeAttr(name)}','${safeAttr(img)}')">★</span><div onclick="abrirConteudo('${safeAttr(id)}','${tipo}')"><img loading="lazy" src="${escapeHtml(img)}" alt="${escapeHtml(name)}" onerror="this.onerror=null;this.src='https://placehold.co/300x450/171a22/ffffff?text=Sem+Foto'"><div class="card-name">${escapeHtml(name)}</div></div></div>`;
+function cardHtml(i,tipo){
+  const id=String(i.stream_id||i.series_id||""),favs=currentLogged.favs||[],isFav=favs.some(f=>String(f.id)===id&&f.tipo===tipo),history=currentLogged.history||{};
+  let progress=false,seasonTag="";
+  if(tipo==="series"){
+    const h=Object.values(history).find(x=>String(x.seriesParentId)===id&&x.tipo==="series");
+    if(h){progress=true;seasonTag=`<span class="badge-season">T${escapeHtml(h.season||"")}</span>`}
+  }else if(history[id])progress=true;
+  const img=i.stream_icon||i.cover||i.img||i.movie_image||"",name=i.name||i.title||"Sem título";
+  return `<div class="card ${progress?"in-progress":""}">${progress?'<span class="badge-continue">CONTINUAR</span>':""}${seasonTag}<span class="fav-star ${isFav?"active":""}" title="Adicionar à minha lista" onclick="toggleFav(event,'${safeAttr(id)}','${tipo}','${safeAttr(name)}','${safeAttr(img)}')">★</span><div onclick="abrirConteudo('${safeAttr(id)}','${tipo}')"><img loading="lazy" src="${escapeHtml(img)}" alt="${escapeHtml(name)}" onerror="this.onerror=null;this.src='https://placehold.co/300x450/171a22/ffffff?text=Sem+Foto'"><div class="card-name">${escapeHtml(name)}</div></div></div>`
 }
 
-async function abrirConteudo(id, tipo){
-  if(tipo === "live") return play(id, "m3u8", "live");
+async function abrirConteudo(id,tipo){
+  if(tipo==="live")return play(id,"m3u8","live");
   try{
-    const action = tipo === "series" ? "get_series_info" : "get_vod_info", key = tipo === "series" ? "series_id" : "vod_id";
-    const r = await fetch(`${API.url}/player_api.php?username=${encodeURIComponent(API.u)}&password=${encodeURIComponent(API.p)}&action=${action}&${key}=${encodeURIComponent(id)}`);
-    if(!r.ok) throw Error();
-    const res = await r.json(), info = res.info || res.movie_data || {}, name = info.name || info.title || "Detalhes";
-    let html = `<img src="${escapeHtml(info.cover||info.movie_image||"")}" style="width:160px;border-radius:8px" onerror="this.onerror=null;this.src='https://placehold.co/300x450/171a22/ffffff?text=Sem+Foto'"><h2>${escapeHtml(name)}</h2><p>${escapeHtml(info.plot||"Sinopse não disponível.")}</p>`;
-    if(tipo === "series"){
-      window.tempEps = res.episodes || {}; currentSeriesEpisodesData = res.episodes || {};
-      const seasons = Object.keys(window.tempEps), hist = Object.values(currentLogged.history||{}).find(h=>String(h.seriesParentId)===String(id)), last = hist ? String(hist.season) : seasons[0];
-      html += `<select id="season-select" class="input-adm" onchange="carregarEps(this.value,'${safeAttr(id)}')">${seasons.map(s=>`<option value="${safeAttr(s)}" ${s===last?"selected":""}>Temporada ${escapeHtml(s)}</option>`).join("")}</select><div id="eps-box" style="margin-top:10px;max-height:360px;overflow-y:auto"></div>`;
-      document.getElementById("detalhes-body").innerHTML = html; document.getElementById("modal-detalhes").style.display = "block"; carregarEps(last, id); return;
-    } else {
-      const h = (currentLogged.history||{})[id], ext = info.container_extension || "mp4";
-      html += h ? `<button onclick="play('${safeAttr(id)}','${safeAttr(ext)}','movie',${Number(h.time)||0})" style="width:90%;padding:15px;background:var(--red);color:white;border:0;margin:8px;border-radius:8px">RETOMAR EM ${Math.floor((Number(h.time)||0)/60)} MIN</button><button onclick="play('${safeAttr(id)}','${safeAttr(ext)}','movie',0)" style="width:90%;padding:12px;background:#333;color:white;border:0;margin:5px">ASSISTIR DO INÍCIO</button>` : `<button onclick="play('${safeAttr(id)}','${safeAttr(ext)}','movie')" style="width:90%;padding:15px;background:var(--red);color:white;border:0">ASSISTIR AGORA</button>`;
+    const action=tipo==="series"?"get_series_info":"get_vod_info",key=tipo==="series"?"series_id":"vod_id";
+    const r=await fetch(`${API.url}/player_api.php?username=${encodeURIComponent(API.u)}&password=${encodeURIComponent(API.p)}&action=${action}&${key}=${encodeURIComponent(id)}`);
+    if(!r.ok)throw Error();
+    const res=await r.json(),info=res.info||res.movie_data||{},name=info.name||info.title||"Detalhes";
+    let html=`<img src="${escapeHtml(info.cover||info.movie_image||"")}" style="width:160px;border-radius:8px" onerror="this.onerror=null;this.src='https://placehold.co/300x450/171a22/ffffff?text=Sem+Foto'"><h2>${escapeHtml(name)}</h2><p>${escapeHtml(info.plot||"Sinopse não disponível.")}</p>`;
+    if(tipo==="series"){
+      window.tempEps=res.episodes||{};currentSeriesEpisodesData=res.episodes||{};
+      const seasons=Object.keys(window.tempEps),hist=Object.values(currentLogged.history||{}).find(h=>String(h.seriesParentId)===String(id)),last=hist?String(hist.season):seasons[0];
+      html+=`<select id="season-select" class="input-adm" onchange="carregarEps(this.value,'${safeAttr(id)}')">${seasons.map(s=>`<option value="${safeAttr(s)}" ${s===last?"selected":""}>Temporada ${escapeHtml(s)}</option>`).join("")}</select><div id="eps-box" style="margin-top:10px;max-height:360px;overflow-y:auto"></div>`;
+      document.getElementById("detalhes-body").innerHTML=html;document.getElementById("modal-detalhes").style.display="block";carregarEps(last,id);return
+    }else{
+      const h=(currentLogged.history||{})[id],ext=info.container_extension||"mp4";
+      html+=h?`<button onclick="play('${safeAttr(id)}','${safeAttr(ext)}','movie',${Number(h.time)||0})" style="width:90%;padding:15px;background:var(--red);color:white;border:0;margin:8px;border-radius:8px">RETOMAR EM ${Math.floor((Number(h.time)||0)/60)} MIN</button><button onclick="play('${safeAttr(id)}','${safeAttr(ext)}','movie',0)" style="width:90%;padding:12px;background:#333;color:white;border:0;margin:5px">ASSISTIR DO INÍCIO</button>`:`<button onclick="play('${safeAttr(id)}','${safeAttr(ext)}','movie')" style="width:90%;padding:15px;background:var(--red);color:white;border:0">ASSISTIR AGORA</button>`
     }
-    document.getElementById("detalhes-body").innerHTML = html; document.getElementById("modal-detalhes").style.display = "block";
+    document.getElementById("detalhes-body").innerHTML=html;document.getElementById("modal-detalhes").style.display="block"
   }catch(e){alert("Não foi possível carregar os detalhes deste conteúdo.")}
 }
 
-function carregarEps(s, seriesId){
-  if(!s || !window.tempEps?.[s]){const box = document.getElementById("eps-box"); if(box) box.innerHTML = '<p style="color:#aaa">Nenhum episódio disponível.</p>'; return;}
-  document.getElementById("eps-box").innerHTML = window.tempEps[s].map(e=>{
-    const id = String(e.id||e.stream_id), h = (currentLogged.history||{})[id], title = e.title || `Episódio ${e.episode_num||""}`;
-    return `<div class="ep-item ${h?"highlight":""}" onclick="prepararEp('${safeAttr(id)}','${safeAttr(e.container_extension||"mp4")}','${safeAttr(seriesId)}','${safeAttr(s)}','${safeAttr(title)}')"><span style="font-size:12px;font-weight:bold">E${escapeHtml(e.episode_num||"")} - ${escapeHtml(title)}</span>${h?`<br><span style="font-size:9px;color:var(--yellow)">PAROU EM ${Math.floor(h.time/60)} MIN</span>`:""}</div>`;
-  }).join("");
+function carregarEps(s,seriesId){
+  if(!s||!window.tempEps?.[s]){const box=document.getElementById("eps-box");if(box)box.innerHTML='<p style="color:#aaa">Nenhum episódio disponível.</p>';return}
+  document.getElementById("eps-box").innerHTML=window.tempEps[s].map(e=>{
+    const id=String(e.id||e.stream_id),h=(currentLogged.history||{})[id],title=e.title||`Episódio ${e.episode_num||""}`;
+    return `<div class="ep-item ${h?"highlight":""}" onclick="prepararEp('${safeAttr(id)}','${safeAttr(e.container_extension||"mp4")}','${safeAttr(seriesId)}','${safeAttr(s)}','${safeAttr(title)}')"><span style="font-size:12px;font-weight:bold">E${escapeHtml(e.episode_num||"")} - ${escapeHtml(title)}</span>${h?`<br><span style="font-size:9px;color:var(--yellow)">PAROU EM ${Math.floor(h.time/60)} MIN</span>`:""}</div>`
+  }).join("")
 }
 
-function prepararEp(id, ext, parent, season, title){
-  const h = (currentLogged.history||{})[id];
+function prepararEp(id,ext,parent,season,title){
+  const h=(currentLogged.history||{})[id];
   if(h){
-    document.getElementById("escolha-body").innerHTML = `<h3>${escapeHtml(title)}</h3><button onclick="fecharModalEscolha();play('${safeAttr(id)}','${safeAttr(ext)}','series',${Number(h.time)||0},'${safeAttr(parent)}','${safeAttr(season)}')" style="width:100%;padding:15px;background:var(--red);color:white;border:0;margin-bottom:10px">RETOMAR</button><button onclick="fecharModalEscolha();play('${safeAttr(id)}','${safeAttr(ext)}','series',0,'${safeAttr(parent)}','${safeAttr(season)}')" style="width:100%;padding:12px;background:#333;color:white;border:0">DO INÍCIO</button>`;
-    document.getElementById("modal-escolha-ep").style.display = "block";
-  } else play(id, ext, "series", 0, parent, season);
+    document.getElementById("escolha-body").innerHTML=`<h3>${escapeHtml(title)}</h3><button onclick="fecharModalEscolha();play('${safeAttr(id)}','${safeAttr(ext)}','series',${Number(h.time)||0},'${safeAttr(parent)}','${safeAttr(season)}')" style="width:100%;padding:15px;background:var(--red);color:white;border:0;margin-bottom:10px">RETOMAR</button><button onclick="fecharModalEscolha();play('${safeAttr(id)}','${safeAttr(ext)}','series',0,'${safeAttr(parent)}','${safeAttr(season)}')" style="width:100%;padding:12px;background:#333;color:white;border:0">DO INÍCIO</button>`;
+    document.getElementById("modal-escolha-ep").style.display="block"
+  }else play(id,ext,"series",0,parent,season)
 }
 
-function fecharModalEscolha(){document.getElementById("modal-escolha-ep").style.display = "none"}
+function fecharModalEscolha(){document.getElementById("modal-escolha-ep").style.display="none"}
 
-async function play(id, ext, tipo, startTime = 0, parent = null, season = null){
-  currentPlayingId = String(id); currentPlayingType = tipo; currentSeriesParent = parent; currentSeason = season;
-  const url = tipo === "live" ? `${API.url}/live/${API.u}/${API.p}/${id}.m3u8` : tipo === "movie" ? `${API.url}/movie/${API.u}/${API.p}/${id}.${ext||"mp4"}` : `${API.url}/series/${API.u}/${API.p}/${id}.${ext||"mp4"}`;
-  document.getElementById("jump-btns-ui").style.visibility = tipo === "live" ? "hidden" : "visible";
-  document.getElementById("next-ep-btn-ui").style.display = "none";
+async function play(id,ext,tipo,startTime=0,parent=null,season=null){
+  currentPlayingId=String(id);currentPlayingType=tipo;currentSeriesParent=parent;currentSeason=season;
+  const url=tipo==="live"?`${API.url}/live/${API.u}/${API.p}/${id}.m3u8`:tipo==="movie"?`${API.url}/movie/${API.u}/${API.p}/${id}.${ext||"mp4"}`:`${API.url}/series/${API.u}/${API.p}/${id}.${ext||"mp4"}`;
+  document.getElementById("jump-btns-ui").style.visibility=tipo==="live"?"hidden":"visible";
+  document.getElementById("next-ep-btn-ui").style.display="none";
   await solicitarWakeLock();
-  document.getElementById("player-box").style.display = "block";
-  player.src(tipo === "live" ? {src: url, type: "application/x-mpegURL"} : {src: url});
-  player.one("loadedmetadata", () => {if(startTime > 0) try{player.currentTime(startTime)}catch(e){}});
+  document.getElementById("player-box").style.display="block";
+  player.src(tipo==="live"?{src:url,type:"application/x-mpegURL"}:{src:url});
+  player.one("loadedmetadata",()=>{if(startTime>0)try{player.currentTime(startTime)}catch(e){}});
   player.play().catch(()=>{});
-  if(saveInterval) clearInterval(saveInterval);
-  if(tipo !== "live") saveInterval = setInterval(salvarProgressoFirebase, 8000);
+  if(saveInterval)clearInterval(saveInterval);
+  if(tipo!=="live")saveInterval=setInterval(salvarProgressoFirebase,8000);
 }
 
-player.on("timeupdate", () => {
-  if(currentPlayingType !== "series") return;
-  const currentTime = player.currentTime() || 0, duration = player.duration() || 0, nextBtn = document.getElementById("next-ep-btn-ui");
-  if(duration > 0){
-    const timeLeft = duration - currentTime;
-    if(timeLeft <= 40 && timeLeft > 0){if(nextBtn.style.display !== "flex") nextBtn.style.display = "flex"}
-    else{if(nextBtn.style.display !== "none") nextBtn.style.display = "none"}
+player.on("timeupdate",()=>{
+  if(currentPlayingType!=="series")return;
+  const currentTime=player.currentTime()||0,duration=player.duration()||0,nextBtn=document.getElementById("next-ep-btn-ui");
+  if(duration>0){
+    const timeLeft=duration-currentTime;
+    if(timeLeft<=40&&timeLeft>0){if(nextBtn.style.display!=="flex")nextBtn.style.display="flex"}
+    else{if(nextBtn.style.display!=="none")nextBtn.style.display="none"}
   }
 });
 
-player.on("ended", () => {if(currentPlayingType === "series") irParaProximoEpisodio()});
+player.on("ended",()=>{if(currentPlayingType==="series")irParaProximoEpisodio()});
 
 function irParaProximoEpisodio(){
-  if(!currentSeriesEpisodesData || !currentSeason || !currentPlayingId) return;
-  const epsList = currentSeriesEpisodesData[currentSeason]; if(!Array.isArray(epsList)) return;
-  const currentIndex = epsList.findIndex(e=>String(e.id||e.stream_id)===String(currentPlayingId));
-  if(currentIndex > -1 && currentIndex + 1 < epsList.length){
-    const nextEp = epsList[currentIndex + 1];
-    play(String(nextEp.id||nextEp.stream_id), nextEp.container_extension||"mp4", "series", 0, currentSeriesParent, currentSeason);
-  } else {
-    const seasons = Object.keys(currentSeriesEpisodesData), currentSeasonIdx = seasons.indexOf(String(currentSeason));
-    if(currentSeasonIdx > -1 && currentSeasonIdx + 1 < seasons.length){
-      const nextSeasonKey = seasons[currentSeasonIdx + 1], nextSeasonEps = currentSeriesEpisodesData[nextSeasonKey];
-      if(Array.isArray(nextSeasonEps) && nextSeasonEps.length > 0){
-        play(String(nextSeasonEps[0].id||nextSeasonEps[0].stream_id), nextSeasonEps[0].container_extension||"mp4", "series", 0, currentSeriesParent, nextSeasonKey);
-      } else fecharPlayer();
-    } else fecharPlayer();
+  if(!currentSeriesEpisodesData||!currentSeason||!currentPlayingId)return;
+  const epsList=currentSeriesEpisodesData[currentSeason];if(!Array.isArray(epsList))return;
+  const currentIndex=epsList.findIndex(e=>String(e.id||e.stream_id)===String(currentPlayingId));
+  if(currentIndex>-1&&currentIndex+1<epsList.length){
+    const nextEp=epsList[currentIndex+1];
+    play(String(nextEp.id||nextEp.stream_id),nextEp.container_extension||"mp4","series",0,currentSeriesParent,currentSeason);
+  }else{
+    const seasons=Object.keys(currentSeriesEpisodesData),currentSeasonIdx=seasons.indexOf(String(currentSeason));
+    if(currentSeasonIdx>-1&&currentSeasonIdx+1<seasons.length){
+      const nextSeasonKey=seasons[currentSeasonIdx+1],nextSeasonEps=currentSeriesEpisodesData[nextSeasonKey];
+      if(Array.isArray(nextSeasonEps)&&nextSeasonEps.length>0){
+        play(String(nextSeasonEps[0].id||nextSeasonEps[0].stream_id),nextSeasonEps[0].container_extension||"mp4","series",0,currentSeriesParent,nextSeasonKey);
+      }else fecharPlayer();
+    }else fecharPlayer();
   }
 }
 
-function pularTempo(s){if(player && !player.isDisposed()){player.currentTime(Math.max(0,(player.currentTime()||0)+s)); player.userActive(true)}}
+function pularTempo(s){if(player&&!player.isDisposed()){player.currentTime(Math.max(0,(player.currentTime()||0)+s));player.userActive(true)}}
 
 async function salvarProgressoFirebase(){
-  if(!currentPlayingId || currentPlayingType === "live" || !currentLogged.id) return;
-  const time = Math.floor(player.currentTime()||0), duration = player.duration();
-  if(!duration || !Number.isFinite(duration)) return;
-  if(!currentLogged.history) currentLogged.history = {};
-  if(time < 10 || (time/duration)*100 >= 95){if(currentLogged.history[currentPlayingId]) delete currentLogged.history[currentPlayingId]}
-  else currentLogged.history[currentPlayingId] = {time, tipo: currentPlayingType, seriesParentId: currentSeriesParent, season: currentSeason};
+  if(!currentPlayingId||currentPlayingType==="live"||!currentLogged.id)return;
+  const time=Math.floor(player.currentTime()||0),duration=player.duration();
+  if(!duration||!Number.isFinite(duration))return;
+  if(!currentLogged.history)currentLogged.history={};
+  if(time<10||time/duration*100>=95){if(currentLogged.history[currentPlayingId])delete currentLogged.history[currentPlayingId]}
+  else currentLogged.history[currentPlayingId]={time,tipo:currentPlayingType,seriesParentId:currentSeriesParent,season:currentSeason};
   try{
     await fetch(`${DB}/${currentLogged.id}/history.json`, {
       method: "PUT",
@@ -547,77 +513,77 @@ async function salvarProgressoFirebase(){
 }
 
 async function fecharPlayer(){
-  if(currentPlayingType !== "live") await salvarProgressoFirebase();
-  if(saveInterval) clearInterval(saveInterval); saveInterval = null; player.pause(); liberarWakeLock();
-  document.getElementById("player-box").style.display = "none";
-  document.getElementById("next-ep-btn-ui").style.display = "none";
-  currentPlayingId = null; currentPlayingType = null;
-  mudarSecao(secaoAtual, document.querySelector(`.btn-secao[onclick*="'${secaoAtual}'"]`));
+  if(currentPlayingType!=="live")await salvarProgressoFirebase();
+  if(saveInterval)clearInterval(saveInterval);saveInterval=null;player.pause();liberarWakeLock();
+  document.getElementById("player-box").style.display="none";
+  document.getElementById("next-ep-btn-ui").style.display="none";
+  currentPlayingId=null;currentPlayingType=null;
+  mudarSecao(secaoAtual,document.querySelector(`.btn-secao[onclick*="'${secaoAtual}'"]`))
 }
 
-function abrirConfig(){document.getElementById("modal-config").style.display = "block"}
+function abrirConfig(){document.getElementById("modal-config").style.display="block"}
 
 async function redefinirSenha(){
-  const atual = document.getElementById("cfg-pass-atual").value, nova = document.getElementById("cfg-pass-nova").value, conf = document.getElementById("cfg-pass-conf").value;
-  if(!atual || !nova || !conf) return alert("Preencha todos os campos!");
-  if(atual !== currentLogged.pass) return alert("Senha atual incorreta!");
-  if(nova !== conf) return alert("A senha nova e a confirmação não conferem!");
-  if(nova.length < 4) return alert("A senha deve ter pelo menos 4 caracteres!");
+  const atual=document.getElementById("cfg-pass-atual").value,nova=document.getElementById("cfg-pass-nova").value,conf=document.getElementById("cfg-pass-conf").value;
+  if(!atual||!nova||!conf)return alert("Preencha todos os campos!");
+  if(atual!==currentLogged.pass)return alert("Senha atual incorreta!");
+  if(nova!==conf)return alert("A senha nova e a confirmação não conferem!");
+  if(nova.length<4)return alert("A senha deve ter pelo menos 4 caracteres!");
   try{
     await fetch(`${DB}/${currentLogged.id}.json`, {
       method: "PATCH",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({pass: nova})
     });
-    currentLogged.pass = nova;
-    localStorage.setItem("clone_creds", JSON.stringify({u: currentLogged.user, p: nova}));
+    currentLogged.pass=nova;
+    localStorage.setItem("clone_creds",JSON.stringify({u:currentLogged.user,p:nova}));
     alert("Senha alterada com sucesso!");
     ["cfg-pass-atual","cfg-pass-nova","cfg-pass-conf"].forEach(id=>document.getElementById(id).value="");
-    fecharModais();
+    fecharModais()
   }catch(e){alert("Erro ao atualizar senha.")}
 }
 
 async function limparHistorico(){
-  if(!confirm("Deseja realmente limpar todo o histórico de Continuar Assistindo?")) return;
+  if(!confirm("Deseja realmente limpar todo o histórico de Continuar Assistindo?"))return;
   try{
     await fetch(`${DB}/${currentLogged.id}/history.json`, {method: "DELETE"});
-    currentLogged.history = {}; alert("Histórico limpo!"); fecharModais(); mudarSecao(secaoAtual);
+    currentLogged.history={};alert("Histórico limpo!");fecharModais();mudarSecao(secaoAtual)
   }catch(e){alert("Erro ao limpar histórico.")}
 }
 
 async function abrirADM(){
-  if(!currentLogged.adm) return alert("Acesso restrito ao administrador.");
-  document.getElementById("modal-adm").style.display = "block";
+  if(!currentLogged.adm)return alert("Acesso restrito ao administrador.");
+  document.getElementById("modal-adm").style.display="block";
   try{
     const r = await fetch(`${DB}.json`);
     const res = await r.json();
-    let html = "";
-    for(const id in (res || {})){
-      const u = res[id];
-      const ativos = Array.isArray(u.active_devices) ? u.active_devices.length : 0;
+    let html="";
+    for(const id in (res||{})){
+      const u=res[id];
+      const ativos=Array.isArray(u.active_devices)?u.active_devices.length:0;
       const dataVenc = u.expira || "N/A";
-      html += `<div class="user-card"><b>${escapeHtml(u.user)} (${escapeHtml(u.pass)})</b> <span style="float:right;color:${u.status==="bloqueado"?"#ff5555":"#42d6a0"}">${escapeHtml(u.status||"ativo")}</span><br>Telas: ${ativos}/${Number(u.screens)||1} | Vence: ${dataVenc}<br><br><button class="btn-adm" style="background:#2980b9" onclick="prepararEdicao('${safeAttr(id)}','${safeAttr(u.user)}','${safeAttr(u.pass)}','${Number(u.screens)||1}','${safeAttr(u.expira||"")}')">Editar</button><button class="btn-adm" style="background:#8e44ad" onclick="resetarTelas('${safeAttr(id)}')">Reset telas</button><button class="btn-adm" style="background:#d35400" onclick="toggleStatus('${safeAttr(id)}','${safeAttr(u.status||"ativo")}')">Bloq/Lib</button><button class="btn-adm" style="background:#c0392b" onclick="excluirUser('${safeAttr(id)}')">Excluir</button></div>`;
+      html+=`<div class="user-card"><b>${escapeHtml(u.user)} (${escapeHtml(u.pass)})</b> <span style="float:right;color:${u.status==="bloqueado"?"#ff5555":"#42d6a0"}">${escapeHtml(u.status||"ativo")}</span><br>Telas: ${ativos}/${Number(u.screens)||1} | Vence: ${dataVenc}<br><br><button class="btn-adm" style="background:#2980b9" onclick="prepararEdicao('${safeAttr(id)}','${safeAttr(u.user)}','${safeAttr(u.pass)}','${Number(u.screens)||1}','${safeAttr(u.expira||"")}')">Editar / Dias</button><button class="btn-adm" style="background:#8e44ad" onclick="resetarTelas('${safeAttr(id)}')">Reset telas</button><button class="btn-adm" style="background:#d35400" onclick="toggleStatus('${safeAttr(id)}','${safeAttr(u.status||"ativo")}')">Bloq/Lib</button><button class="btn-adm" style="background:#c0392b" onclick="excluirUser('${safeAttr(id)}')">Excluir</button></div>`
     }
-    document.getElementById("lista-usuarios-adm").innerHTML = html || '<p style="color:#aaa">Nenhum usuário cadastrado.</p>';
-  }catch(e){document.getElementById("lista-usuarios-adm").innerHTML = '<p style="color:#f66">Erro ao carregar usuários.</p>';}
+    document.getElementById("lista-usuarios-adm").innerHTML=html||'<p style="color:#aaa">Nenhum usuário cadastrado.</p>';
+  }catch(e){document.getElementById("lista-usuarios-adm").innerHTML='<p style="color:#f66">Erro ao carregar usuários.</p>';}
 }
 
 async function resetarTelas(id){
-  if(!currentLogged.adm || !confirm("Deseja desconectar todos os aparelhos?")) return;
+  if(!currentLogged.adm||!confirm("Deseja desconectar todos os aparelhos?"))return;
   await fetch(`${DB}/${id}.json`, {
     method: "PATCH",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify({active_devices: [], online_count: 0})
   });
-  alert("Telas liberadas!"); abrirADM();
+  alert("Telas liberadas!");abrirADM();
 }
 
 async function logout(){
-  if(currentLogged && currentLogged.role !== "admin"){
+  if(currentLogged&&currentLogged.role!=="admin"){
     try{
-      const device = obterDeviceId(), r = await fetch(`${DB}/${currentLogged.id}.json`), res = await r.json();
-      let devices = Array.isArray(res?.active_devices) ? res.active_devices : [];
-      devices = devices.filter(x=>x!==device);
+      const device=obterDeviceId(),r=await fetch(`${DB}/${currentLogged.id}.json`),res=await r.json();
+      let devices=Array.isArray(res?.active_devices)?res.active_devices:[];
+      devices=devices.filter(x=>x!==device);
       await fetch(`${DB}/${currentLogged.id}.json`, {
         method: "PATCH",
         headers: {"Content-Type": "application/json"},
@@ -625,30 +591,34 @@ async function logout(){
       });
     }catch(e){}
   }
-  localStorage.removeItem("clone_creds"); location.reload();
+  localStorage.removeItem("clone_creds");location.reload();
 }
 
 async function salvarUsuario(){
-  if(!currentLogged.adm) return alert("Acesso restrito.");
-  const id = document.getElementById("edit-id").value;
-  const userName = document.getElementById("new-u").value.trim().toLowerCase();
-  const pass = document.getElementById("new-p").value.trim();
-  const expiraStr = document.getElementById("new-exp-data").value.trim();
-  const screens = parseInt(document.getElementById("new-screens").value, 10) || 1;
+  if(!currentLogged.adm)return alert("Acesso restrito.");
+  const id=document.getElementById("edit-id").value,userName=document.getElementById("new-u").value.trim().toLowerCase(),pass=document.getElementById("new-p").value.trim(),days=parseInt(document.getElementById("new-days").value,10),screens=parseInt(document.getElementById("new-screens").value,10)||1;
+  if(!userName||!pass)return alert("Informe e-mail e senha.");
+  if(!validarEmail(userName))return alert("Digite um e-mail válido.");
 
-  if(!userName || !pass) return alert("Informe e-mail e senha.");
-  
-  let dataFormatada = expiraStr;
-  if(!dataFormatada && !id) {
-    const d = new Date(Date.now() + 30*86400000);
-    dataFormatada = d.toLocaleDateString("pt-BR", {day:'2-digit', month:'2-digit', year:'numeric'});
-  } else if(!dataFormatada && id) {
-    const r = await fetch(`${DB}/${id}.json`);
-    const usr = await r.json();
-    dataFormatada = usr?.expira || "01/01/2030";
+  let dataFormatada = "";
+  if(isNaN(days) || days <= 0) {
+    // Se não informou dias novos, mantém a data anterior ou gera 30 dias para novos usuários
+    if(id) {
+      const r = await fetch(`${DB}/${id}.json`);
+      const usr = await r.json();
+      dataFormatada = usr?.expira || new Date(Date.now() + 30*86400000).toLocaleDateString("pt-BR", {day:'2-digit', month:'2-digit', year:'numeric'});
+    } else {
+      dataFormatada = new Date(Date.now() + 30*86400000).toLocaleDateString("pt-BR", {day:'2-digit', month:'2-digit', year:'numeric'});
+    }
+  } else {
+    // Soma dias a partir de hoje (ou renova a partir da data atual)
+    const novoTimestamp = Date.now() + (days * 86400000);
+    dataFormatada = new Date(novoTimestamp).toLocaleDateString("pt-BR", {
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    });
   }
 
-  const user = {user: userName, pass, screens, expira: dataFormatada, status: "ativo", role: "client"};
+  const user={user:userName,pass,screens,expira:dataFormatada,status:"ativo",role:"client"};
   try{
     const url = id ? `${DB}/${id}.json` : `${DB}.json`;
     const method = id ? "PATCH" : "POST";
@@ -658,52 +628,44 @@ async function salvarUsuario(){
       body: JSON.stringify(user)
     });
     if(!r.ok) throw Error();
-    limparFormADM(); await abrirADM(); alert("Cliente salvo com sucesso!");
-  }catch(e){alert("Erro ao salvar usuário.")}
+    limparFormADM();await abrirADM();alert("Cliente salvo com sucesso!");
+  }catch(e){alert("Erro ao salvar usuário.");}
 }
 
-async function toggleStatus(id, s){
-  if(!currentLogged.adm) return;
+async function toggleStatus(id,s){
+  if(!currentLogged.adm)return;
   await fetch(`${DB}/${id}.json`, {
     method: "PATCH",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({status: s === "bloqueado" ? "ativo" : "bloqueado"})
+    body: JSON.stringify({status: s==="bloqueado"?"ativo":"bloqueado"})
   });
   abrirADM();
 }
 
 async function excluirUser(id){
-  if(!currentLogged.adm || !confirm("Excluir este usuário?")) return;
+  if(!currentLogged.adm||!confirm("Excluir este usuário?"))return;
   await fetch(`${DB}/${id}.json`, {method: "DELETE"});
   abrirADM();
 }
 
-function prepararEdicao(id, u, p, s, exp){
-  document.getElementById("edit-id").value = id;
-  document.getElementById("new-u").value = u;
-  document.getElementById("new-p").value = p;
-  document.getElementById("new-screens").value = s;
-  document.getElementById("new-exp-data").value = exp;
-  document.getElementById("btn-save-adm").innerText = "ATUALIZAR CLIENTE";
-  document.getElementById("adm-form")?.scrollIntoView({behavior:"smooth", block:"start"});
+function prepararEdicao(id,u,p,s,exp){
+  document.getElementById("edit-id").value=id;document.getElementById("new-u").value=u;document.getElementById("new-p").value=p;document.getElementById("new-screens").value=s;document.getElementById("new-days").value="";
+  document.getElementById("btn-save-adm").innerText="ATUALIZAR CLIENTE / DIAS";
+  document.getElementById("adm-url")?.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-function limparFormADM(){
-  ["edit-id","new-u","new-p","new-exp-data"].forEach(id=>document.getElementById(id).value="");
-  document.getElementById("new-screens").value = "1";
-  document.getElementById("btn-save-adm").innerText = "SALVAR CLIENTE";
-}
+function limparFormADM(){["edit-id","new-u","new-p","new-days"].forEach(id=>document.getElementById(id).value="");document.getElementById("new-screens").value="1";document.getElementById("btn-save-adm").innerText="SALVAR CLIENTE"}
 
 function executarBusca(q){
-  if(!q.trim()){mudarSecao(secaoAtual, document.querySelector(`.btn-secao[onclick*="'${secaoAtual}'"]`)); return;}
-  const data = fullData[secaoAtual] || [], term = q.toLocaleLowerCase("pt-BR"), results = data.filter(i=>(i.name||i.title||"").toLocaleLowerCase("pt-BR").includes(term)).slice(0,60);
-  document.getElementById("conteudo-principal").innerHTML = results.length ? `<div class="grid-view">${results.map(i=>cardHtml(i,secaoAtual)).join("")}</div>` : '<p style="text-align:center;padding:30px;color:#aaa">Nenhum resultado encontrado.</p>';
+  if(!q.trim()){mudarSecao(secaoAtual,document.querySelector(`.btn-secao[onclick*="'${secaoAtual}'"]`));return}
+  const data=fullData[secaoAtual]||[],term=q.toLocaleLowerCase("pt-BR"),results=data.filter(i=>(i.name||i.title||"").toLocaleLowerCase("pt-BR").includes(term)).slice(0,60);
+  document.getElementById("conteudo-principal").innerHTML=results.length?`<div class="grid-view">${results.map(i=>cardHtml(i,secaoAtual)).join("")}</div>`:'<p style="text-align:center;padding:30px;color:#aaa">Nenhum resultado encontrado.</p>';
 }
 
-async function toggleFav(event, id, tipo, name, img){
-  event.stopPropagation(); let f = Array.isArray(currentLogged.favs) ? currentLogged.favs : [], idx = f.findIndex(x=>String(x.id)===String(id)&&x.tipo===tipo);
-  if(idx > -1) f.splice(idx, 1); else f.push({id: String(id), tipo, name, img});
-  currentLogged.favs = f; event.target.classList.toggle("active", idx < 0);
+async function toggleFav(event,id,tipo,name,img){
+  event.stopPropagation();let f=Array.isArray(currentLogged.favs)?currentLogged.favs:[],idx=f.findIndex(x=>String(x.id)===String(id)&&x.tipo===tipo);
+  if(idx>-1)f.splice(idx,1);else f.push({id:String(id),tipo,name,img});
+  currentLogged.favs=f;event.target.classList.toggle("active",idx<0);
   try{
     await fetch(`${DB}/${currentLogged.id}/favs.json`, {
       method: "PUT",
@@ -714,18 +676,18 @@ async function toggleFav(event, id, tipo, name, img){
 }
 
 function mostrarFavoritos(btn){
-  document.querySelectorAll(".btn-secao").forEach(b=>b.classList.remove("active")); if(btn) btn.classList.add("active");
-  document.getElementById("main-search").value = ""; const favs = currentLogged.favs || [];
-  document.getElementById("conteudo-principal").innerHTML = favs.length ? `<div class="row-header" style="padding:20px 24px 0"><span class="row-title">★ MINHA LISTA</span></div><div class="grid-view">${favs.map(x=>cardHtml({stream_id:x.id, series_id:x.id, name:x.name, img:x.img, stream_icon:x.img, cover:x.img}, x.tipo)).join("")}</div>` : '<p style="text-align:center;padding:40px;color:#aaa">Sua lista está vazia. Toque na estrela de um conteúdo para adicioná-lo.</p>';
+  document.querySelectorAll(".btn-secao").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");
+  document.getElementById("main-search").value="";const favs=currentLogged.favs||[];
+  document.getElementById("conteudo-principal").innerHTML=favs.length?`<div class="row-header" style="padding:20px 24px 0"><span class="row-title">★ MINHA LISTA</span></div><div class="grid-view">${favs.map(x=>cardHtml({stream_id:x.id,series_id:x.id,name:x.name,img:x.img,stream_icon:x.img,cover:x.img},x.tipo)).join("")}</div>`:'<p style="text-align:center;padding:40px;color:#aaa">Sua lista está vazia. Toque na estrela de um conteúdo para adicioná-lo.</p>';
 }
 
-function verMais(catId, catName){
-  const f = (fullData[secaoAtual]||[]).filter(i=>String(i.category_id)===String(catId));
-  document.getElementById("conteudo-principal").innerHTML = `<div class="row-header" style="padding:15px 24px"><button onclick="mudarSecao(secaoAtual)" style="background:none;border:0;color:white;font-size:22px">←</button><span class="row-title">${escapeHtml(catName)}</span></div><div class="grid-view">${f.map(i=>cardHtml(i,secaoAtual)).join("")}</div>`; scrollTo(0,0);
+function verMais(catId,catName){
+  const f=(fullData[secaoAtual]||[]).filter(i=>String(i.category_id)===String(catId));
+  document.getElementById("conteudo-principal").innerHTML=`<div class="row-header" style="padding:15px 24px"><button onclick="mudarSecao(secaoAtual)" style="background:none;border:0;color:white;font-size:22px">←</button><span class="row-title">${escapeHtml(catName)}</span></div><div class="grid-view">${f.map(i=>cardHtml(i,secaoAtual)).join("")}</div>`;scrollTo(0,0);
 }
 
 function fecharModais(){document.querySelectorAll(".modal").forEach(m=>m.style.display="none")}
-document.addEventListener("keydown", e => {if(e.key === "Escape"){if(document.getElementById("player-box").style.display === "block") fecharPlayer(); else fecharModais()}});
+document.addEventListener("keydown",e=>{e.key==="Escape"&&(document.getElementById("player-box").style.display==="block"?fecharPlayer():fecharModais())});
 </script>
 </body>
 </html>
