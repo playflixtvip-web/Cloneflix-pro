@@ -182,6 +182,17 @@ function validarEmail(email) {
   return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 }
 
+// Converte string 'dd/mm/aaaa' para objeto Date (Início do dia ou final)
+function parseDataBR(dataStr) {
+  if (!dataStr) return null;
+  const partes = dataStr.split('/');
+  if (partes.length !== 3) return null;
+  const dia = parseInt(partes[0], 10);
+  const mes = parseInt(partes[1], 10) - 1;
+  const ano = parseInt(partes[2], 10);
+  return new Date(ano, mes, dia, 23, 59, 59); // Expira no fim do dia informado
+}
+
 async function cadastrarTesteGratis(){
   const email = document.getElementById("reg-user").value.trim().toLowerCase();
   const pass = document.getElementById("reg-pass").value.trim();
@@ -263,15 +274,27 @@ async function autenticar(isAuto=false){
             status.innerText = "ACESSO BLOQUEADO";
             return alert("Sua conta está bloqueada.");
           }
-          if(user.expira_timestamp && user.expira_timestamp < Date.now()){
-            status.innerText = "TESTE / ACESSO VENCIDO";
-            return alert("Seu acesso venceu.");
+
+          // Validação rigorosa de Vencimento (dd/mm/aaaa)
+          let dataVencimentoMs = user.expira_timestamp;
+          if(!dataVencimentoMs && user.expira) {
+            const dataObj = parseDataBR(user.expira);
+            if(dataObj) dataVencimentoMs = dataObj.getTime();
           }
+
+          if(dataVencimentoMs && dataVencimentoMs < Date.now()){
+            status.innerText = "ACESSO VENCIDO";
+            return alert("Sua conta venceu em " + user.expira + ". Renove seu acesso.");
+          }
+
           let devices = Array.isArray(user.active_devices) ? user.active_devices : [];
+          
+          // Se o dispositivo atual NÃO está na lista, verificamos limite de telas
           if(!devices.includes(deviceId)){
-            if(devices.length >= (Number(user.screens)||1)){
-              status.innerText = "LIMITE DE TELAS";
-              return alert("Limite de telas atingido.");
+            const maxTelas = Number(user.screens) || 1;
+            if(devices.length >= maxTelas){
+              status.innerText = "LIMITE DE TELAS ATINGIDO";
+              return alert(`Limite de telas atingido (${maxTelas} tela(s) permitida(s)). Feche o aplicativo em outro aparelho para entrar.`);
             }
             devices.push(deviceId);
             await fetch(`${DB}/${id}.json`, {
@@ -313,7 +336,16 @@ async function verificarSessaoAtiva(){
   if(!currentLogged.id||currentLogged.role==="admin")return;
   try{
     const r=await fetch(`${DB}/${currentLogged.id}.json`),res=await r.json(),device=obterDeviceId();
-    if(!res||res.status==="bloqueado"||res.status==="suspenso"||!Array.isArray(res.active_devices)||!res.active_devices.includes(device)||(res.expira_timestamp&&res.expira_timestamp<Date.now()))forceLogout()
+    
+    let dataVencimentoMs = res?.expira_timestamp;
+    if(!dataVencimentoMs && res?.expira) {
+      const dataObj = parseDataBR(res.expira);
+      if(dataObj) dataVencimentoMs = dataObj.getTime();
+    }
+
+    if(!res||res.status==="bloqueado"||res.status==="suspenso"||(dataVencimentoMs&&dataVencimentoMs<Date.now())||!Array.isArray(res.active_devices)||!res.active_devices.includes(device)){
+      forceLogout();
+    }
   }catch(e){}
 }
 
