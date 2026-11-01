@@ -1,7 +1,662 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<meta <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#08090d">
+<title>CLONEFLIX ULTRA</title>
+<link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet">
+<style>
+:root{--red:#e50914;--bg:#08090d;--surface:#111319;--card:#171a22;--gray:#252832;--yellow:#f5c451;--text:#f5f5f7;--muted:#9297a5;--border:rgba(255,255,255,.08)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scrollbar-color:#353535 #08090d}
+body{background:radial-gradient(ellipse at 50% -15%,rgba(229,9,20,.12),transparent 45%),var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;margin:0;overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}button{transition:background .2s,border-color .2s,transform .2s;cursor:pointer}button:active{transform:scale(.97)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.sticky-top{position:sticky;top:0;z-index:100;background:rgba(8,9,13,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);box-shadow:0 8px 25px #0003}
+header{padding:18px 24px 10px}.header-top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:15px}
+.logo{font-size:25px;font-weight:1000;letter-spacing:-1.3px;color:var(--red);text-transform:uppercase;white-space:nowrap}.logo:after{content:".";color:white}
+.nav-btns{display:flex;align-items:center;gap:8px}.btn-nav{background:#ffffff0b;border:1px solid var(--border);color:#e5e5e9;padding:9px 13px;border-radius:9px;font-size:11px;font-weight:700}.btn-nav:hover{background:#ffffff19}
+.welcome-center{text-align:left;font-size:11px;color:var(--muted);background:#ffffff08;border:1px solid var(--border);padding:12px 14px;border-radius:10px;margin-bottom:4px;line-height:1.8}.welcome-center b{color:white;font-size:13px}.welcome-center span{color:var(--yellow);font-weight:800}
+.search-container{padding:8px 24px 12px;max-width:1100px;margin:auto}.search-input{width:100%;padding:14px 16px 14px 43px;background:#15171e url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%239297a5' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m16 16 4 4'/%3E%3C/svg%3E") no-repeat 14px center;border:1px solid var(--border);color:white;border-radius:12px;font-size:13px;outline:none}.search-input:focus{border-color:#e50914b3;box-shadow:0 0 0 3px #e509141a}
+.secao-container{display:flex;gap:9px;padding:10px 24px 16px;overflow-x:auto;scrollbar-width:none;background:transparent;max-width:1100px;margin:auto}.secao-container::-webkit-scrollbar,.shelf::-webkit-scrollbar{display:none}
+.btn-secao{padding:10px 19px;background:#181a22;border:1px solid #ffffff0f;color:#b9bdc8;border-radius:9px;font-weight:750;font-size:11px;white-space:nowrap}.btn-secao:hover{background:#252832;color:white}.btn-secao.active{background:var(--red);color:white;border-color:var(--red);box-shadow:0 4px 16px #e5091433}
+.row{padding:15px 0 10px;animation:fadeIn .35s ease both}.row-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 24px;margin-bottom:14px}.row-title{font-size:16px;font-weight:850;letter-spacing:-.3px;line-height:1.4}.btn-ver-mais{color:#ff5b63;font-size:10px;font-weight:800;letter-spacing:.4px;background:transparent;border:1px solid #e5091440;padding:7px 10px;border-radius:7px;white-space:nowrap}.btn-ver-mais:hover{background:#e509141f;border-color:var(--red)}
+.shelf{display:flex;gap:13px;overflow-x:auto;padding:2px 24px 14px;scrollbar-width:none;scroll-snap-type:x proximity}
+.grid-view{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:18px;padding:20px 24px 35px;max-width:1500px;margin:auto}
+.card{min-width:145px;max-width:210px;border-radius:12px;overflow:hidden;background:var(--card);border:1px solid #ffffff10;position:relative;cursor:pointer;scroll-snap-align:start;box-shadow:0 5px 18px #0002;transition:transform .25s,border-color .25s,box-shadow .25s}
+.card:hover{transform:translateY(-5px);border-color:#ffffff33;box-shadow:0 12px 28px #0006}.card.in-progress{border:1px solid #e50914cc;box-shadow:0 0 0 1px #e509141f}
+.card img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:#1b1e27}.card-name{padding:11px 8px;font-size:11px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:650;color:#e9eaf0;background:linear-gradient(#171a22,#12141a)}
+.fav-star{position:absolute;top:8px;right:8px;font-size:21px;width:33px;height:33px;display:flex;align-items:center;justify-content:center;text-shadow:0 2px 6px #000;z-index:10;color:white;background:#0009;border:1px solid #ffffff20;border-radius:50%;backdrop-filter:blur(8px)}
+.fav-star.active{color:var(--yellow);background:#000c;border-color:#f5c45166}
+.badge-continue{position:absolute;top:9px;left:8px;background:var(--red);color:white;font-size:8px;font-weight:850;letter-spacing:.4px;padding:5px 7px;border-radius:5px;z-index:15;box-shadow:0 3px 10px #0005}
+.badge-season{position:absolute;bottom:47px;right:7px;background:#08090df0;color:var(--yellow);font-size:9px;font-weight:800;padding:5px 7px;border-radius:5px;z-index:15;border:1px solid #f5c45180}
+.modal{display:none;position:fixed;inset:0;background:#050609f7;backdrop-filter:blur(12px);z-index:1000;overflow-y:auto;padding:20px;overscroll-behavior:contain;animation:fadeIn .2s ease}
+.close-modal{position:fixed;top:16px;right:16px;font-size:23px;color:white;cursor:pointer;z-index:2001;background:#20232c;border:1px solid var(--border);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.close-modal:hover{background:var(--red)}
+#login-ui{min-height:100vh;background:radial-gradient(ellipse at 50% 25%,#e5091426,transparent 45%),#07080b}
+#login-ui>div{padding:24px!important}#login-ui>div>div{width:100%!important;max-width:390px!important;padding:36px 28px!important;background:#12141bf5!important;border:1px solid #ffffff1a!important;border-radius:20px!important;box-shadow:0 25px 80px #0009}
+#login-ui h1{font-size:32px;font-weight:1000;letter-spacing:-1.5px;text-shadow:0 0 30px #e5091433}
+#login-status{line-height:1.6}#login-ui button{cursor:pointer;border-radius:10px!important;font-weight:bold}
+.input-adm{width:100%;padding:13px 14px;margin-bottom:12px;background:#191c25;border:1px solid #ffffff17;color:white;border-radius:9px;font-size:13px;transition:border-color .2s,box-shadow .2s}
+.input-adm::placeholder{color:#828795}.input-adm:focus{outline:none;border-color:#e50914bf;box-shadow:0 0 0 3px #e509141a}
+.user-card,.config-section{background:linear-gradient(145deg,#171a22,#101218);padding:17px;border-radius:13px;margin-bottom:12px;border:1px solid var(--border);font-size:12px;line-height:1.9;box-shadow:0 5px 18px #0002;overflow-wrap:anywhere}
+.user-card b{color:white;font-size:13px}.btn-adm{border:1px solid #ffffff19;padding:9px 11px;border-radius:7px;font-size:10px;font-weight:800;color:white;margin:3px 4px 3px 0}.btn-adm:hover{filter:brightness(1.15)}
+.config-section{padding:22px;margin-bottom:18px}.config-section h4{color:white;font-size:15px;margin-bottom:18px}
+.btn-danger{background:#b91c2b;color:white;border:1px solid #ffffff14;padding:13px;border-radius:9px;width:100%;font-weight:800;font-size:11px;margin-top:10px}
+#detalhes-body{max-width:620px!important;margin:55px auto 30px!important;padding:24px 18px 40px!important;background:linear-gradient(145deg,#141720,#0c0e14);border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 35px #0006}
+#detalhes-body>img{width:min(210px,65%)!important;max-height:315px;object-fit:cover;box-shadow:0 15px 35px #0006;border:1px solid #ffffff1a}
+#detalhes-body h2{font-size:23px;font-weight:850;letter-spacing:-.5px;margin:18px 0 12px}#detalhes-body p{line-height:1.8;color:#b0b5c1!important;font-size:13px!important}
+#detalhes-body button,#escolha-body button{cursor:pointer;border-radius:10px!important;font-weight:800}
+.ep-item{padding:16px;border:1px solid #ffffff0f;text-align:left;background:#171a22;margin-bottom:9px;border-radius:10px;cursor:pointer}.ep-item:hover{background:#222631;border-color:#ffffff26}.ep-item.highlight{border:1px solid #e5091499;border-left:4px solid var(--red);background:#e5091414}
+#player-box{display:none;position:fixed;inset:0;background:#000;z-index:2000}#vid{width:100%;height:100%}.video-js{font-family:Arial,sans-serif;background:#000}.video-js .vjs-control-bar{background:linear-gradient(transparent,#000e);height:4.5em}.video-js .vjs-play-progress,.video-js .vjs-volume-level{background-color:var(--red)}
+.video-js .vjs-big-play-button{border:2px solid #ffffffcc;background:#e50914d9;border-radius:50%;width:70px;height:70px;line-height:66px;top:50%;left:50%;transform:translate(-50%,-50%)}
+.vjs-custom-jump-container{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;gap:clamp(35px,12vw,100px);z-index:10;pointer-events:none;width:100%;justify-content:center;opacity:0;transition:opacity .3s}
+.vjs-user-active .vjs-custom-jump-container{opacity:1}.jump-btn-inner{pointer-events:auto;background:#0f0f0fb3;backdrop-filter:blur(8px);border:1px solid #ffffff59;color:white;width:62px;height:62px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:bold}.jump-btn-inner:hover{background:#e50914d9}.jump-btn-inner span{font-size:23px}
+.vjs-next-ep-btn{position:absolute;bottom:75px;right:20px;z-index:30;background:#e50914;color:white;border:2px solid rgba(255,255,255,0.3);padding:12px 22px;border-radius:30px;font-size:13px;font-weight:900;box-shadow:0 6px 25px rgba(229,9,20,0.6);display:none;cursor:pointer;align-items:center;gap:8px;animation:fadeIn .3s ease;letter-spacing:0.5px}
+.vjs-next-ep-btn:hover{background:#f40612;transform:scale(1.06)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="login-ui">
+  <div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999">
+    <div style="width:85%;max-width:340px;background:#111;padding:30px;border-radius:10px;text-align:center;border:1px solid #333">
+      <h1 style="color:var(--red);margin-bottom:5px">CLONEFLIX</h1>
+      <div id="login-status" style="font-size:11px;margin-bottom:15px;color:var(--yellow)">Aguardando credenciais...</div>
+      
+      <!-- Login Form -->
+      <div id="form-login-box">
+        <input type="email" id="user" placeholder="E-mail" class="input-adm" autocomplete="username">
+        <input type="password" id="pass" placeholder="Senha" class="input-adm" autocomplete="current-password">
+        <button onclick="autenticar()" style="width:100%;padding:14px;background:var(--red);color:#fff;border:0;border-radius:5px;font-weight:bold;margin-bottom:10px">ENTRAR</button>
+        <button onclick="alternarTelaRegistro(true)" style="width:100%;padding:10px;background:transparent;color:#aaa;border:1px solid #444;border-radius:5px;font-size:11px">Quero Testar Grátis (24h)</button>
+      </div>
+
+      <!-- Registro Form (24h de Teste) -->
+      <div id="form-registro-box" style="display:none">
+        <input type="email" id="reg-user" placeholder="Digite seu E-mail" class="input-adm">
+        <input type="password" id="reg-pass" placeholder="Crie uma Senha" class="input-adm">
+        <button onclick="cadastrarTesteGratis()" style="width:100%;padding:14px;background:#27ae60;color:#fff;border:0;border-radius:5px;font-weight:bold;margin-bottom:10px">CRIAR CONTA TESTE (24H)</button>
+        <button onclick="alternarTelaRegistro(false)" style="width:100%;padding:10px;background:transparent;color:#aaa;border:0;font-size:11px">Voltar ao Login</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="app-ui" style="display:none">
+  <div class="sticky-top">
+    <header>
+      <div class="header-top">
+        <div class="logo">CLONEFLIX</div>
+        <div class="nav-btns">
+          <button onclick="abrirConfig()" class="btn-nav">⚙ CONFIG</button>
+          <button onclick="abrirADM()" id="adm-btn" style="display:none;background:var(--red);border:0;color:#fff;padding:5px 10px;border-radius:4px;font-size:10px;font-weight:bold">ADM</button>
+          <button onclick="logout()" class="btn-nav">SAIR</button>
+        </div>
+      </div>
+      <div id="welcome-msg" class="welcome-center"></div>
+    </header>
+    <div class="search-container">
+      <input type="text" id="main-search" class="search-input" placeholder="Pesquisar conteúdo..." oninput="executarBusca(this.value)">
+    </div>
+    <div class="secao-container">
+      <button class="btn-secao active" onclick="mudarSecao('live',this)">CANAIS</button>
+      <button class="btn-secao" onclick="mudarSecao('movie',this)">FILMES</button>
+      <button class="btn-secao" onclick="mudarSecao('series',this)">SÉRIES</button>
+      <button class="btn-secao" onclick="mostrarFavoritos(this)" style="color:var(--yellow)">★ MINHA LISTA</button>
+    </div>
+  </div>
+  <div id="conteudo-principal"></div>
+</div>
+
+<div id="modal-config" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><div style="max-width:440px;margin:50px auto"><h3 style="color:var(--red);text-align:center">CONFIGURAÇÕES</h3><div class="config-section"><h4 style="margin-top:0">Alterar senha</h4><input type="password" id="cfg-pass-atual" placeholder="Senha atual" class="input-adm"><input type="password" id="cfg-pass-nova" placeholder="Nova senha" class="input-adm"><input type="password" id="cfg-pass-conf" placeholder="Confirmar nova senha" class="input-adm"><button onclick="redefinirSenha()" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">ATUALIZAR SENHA</button></div><div class="config-section"><h4 style="margin-top:0">Privacidade</h4><p style="font-size:12px;color:#aaa">Remove os itens da fileira Continuar Assistindo.</p><button onclick="limparHistorico()" class="btn-danger">LIMPAR HISTÓRICO</button></div></div></div>
+
+<div id="modal-adm" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><h3 style="color:var(--red);text-align:center">PAINEL GESTOR</h3><div style="max-width:650px;margin:25px auto"><div class="config-section"><h4 style="margin:0 0 12px;color:var(--red)">SERVIDOR IPTV (LIDO DO FIREBASE)</h4><input type="text" id="adm-url" placeholder="URL DNS" class="input-adm" readonly style="opacity:0.7"><input type="text" id="adm-u" placeholder="Usuário IPTV" class="input-adm" readonly style="opacity:0.7"><input type="password" id="adm-p" placeholder="Senha IPTV" class="input-adm" readonly style="opacity:0.7"><small style="color:#aaa;display:block;margin-top:-5px;margin-bottom:10px">Para alterar o servidor, modifique o nó <b>config/server</b> diretamente no seu Firebase Console.</small></div><div class="config-section"><h4 style="margin:0 0 12px">GERENCIAR CLIENTES E DIAS</h4><input type="hidden" id="edit-id"><input type="hidden" id="old-exp"><input type="email" id="new-u" placeholder="E-mail do Cliente" class="input-adm"><input type="text" id="new-p" placeholder="Senha" class="input-adm"><input type="number" id="new-days" placeholder="Adicionar dias de acesso" class="input-adm"><input type="number" id="new-screens" placeholder="Limite de telas" class="input-adm" value="1"><button onclick="salvarUsuario()" id="btn-save-adm" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">SALVAR CLIENTE</button></div><div id="lista-usuarios-adm"></div></div></div>
+
+<div id="modal-detalhes" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><div id="detalhes-body" style="text-align:center;max-width:500px;margin:40px auto;padding-bottom:50px"></div></div>
+<div id="modal-escolha-ep" class="modal" style="z-index:1100;background:#000f"><span class="close-modal" onclick="fecharModalEscolha()">✕</span><div id="escolha-body" style="text-align:center;margin:30vh auto 0;max-width:420px;padding:20px"></div></div>
+<div id="player-box"><span class="close-modal" onclick="fecharPlayer()" style="left:15px;top:15px;font-size:30px;z-index:2005">✕</span><video id="vid" class="video-js vjs-fill vjs-big-play-centered" controls playsinline></video></div>
+
+<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+<script>
+const FIREBASE = "https://clonenovo-default-rtdb.firebaseio.com";
+const DB = `${FIREBASE}/usuarios`;
+
+const player=videojs("vid");
+const jumpContainer=document.createElement("div");
+jumpContainer.className="vjs-custom-jump-container";jumpContainer.id="jump-btns-ui";
+jumpContainer.innerHTML='<button class="jump-btn-inner" onclick="pularTempo(-10)"><span>↺</span>10s</button><button class="jump-btn-inner" onclick="pularTempo(10)"><span>↻</span>10s</button>';
+player.el().appendChild(jumpContainer);
+
+const nextEpBtn=document.createElement("button");
+nextEpBtn.className="vjs-next-ep-btn";
+nextEpBtn.id="next-ep-btn-ui";
+nextEpBtn.innerHTML='Próximo Episódio ⏭';
+nextEpBtn.onclick=()=>irParaProximoEpisodio();
+player.el().appendChild(nextEpBtn);
+
+let fullData={},cacheCategorias={},currentLogged={},secaoAtual="live",saveInterval=null,relogioInterval=null,wakeLock=null,currentPlayingId=null,currentPlayingType=null,currentSeriesParent=null,currentSeason=null,monitorSessaoInterval=null,currentSeriesEpisodesData=null;
+let API={url:"",u:"",p:""};
+
+function obterDeviceId(){let id=localStorage.getItem("clone_device_id");if(!id){id="dev_"+Math.random().toString(36).slice(2,11)+Date.now();localStorage.setItem("clone_device_id",id)}return id}
+
+window.onload = async () => {
+  await carregarConfigServidor();
+  const saved = localStorage.getItem("clone_creds");
+  if(saved){
+    try{
+      const c = JSON.parse(saved);
+      document.getElementById("user").value = c.u;
+      document.getElementById("pass").value = c.p;
+      autenticar(true);
+    }catch(e){localStorage.removeItem("clone_creds")}
+  }
+};
+
+window.addEventListener("beforeunload",()=>{if(currentPlayingType&&currentPlayingType!=="live")salvarProgressoFirebase()});
+async function solicitarWakeLock(){try{if("wakeLock"in navigator)wakeLock=await navigator.wakeLock.request("screen")}catch(e){}}
+function liberarWakeLock(){if(wakeLock){wakeLock.release().then(()=>wakeLock=null).catch(()=>{})}}
+
+async function carregarConfigServidor(){
+  try{
+    const r = await fetch(`${FIREBASE}/config/server.json`);
+    const res = await r.json();
+    if(res){
+      API = res;
+      document.getElementById("adm-url").value = API.url || "";
+      document.getElementById("adm-u").value = API.u || "";
+      document.getElementById("adm-p").value = API.p || "";
+    }
+  }catch(e){}
+}
+
+function alternarTelaRegistro(mostrar){
+  document.getElementById("form-login-box").style.display = mostrar ? "none" : "block";
+  document.getElementById("form-registro-box").style.display = mostrar ? "block" : "none";
+  document.getElementById("login-status").innerText = "";
+}
+
+function validarEmail(email) {
+  return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+}
+
+async function cadastrarTesteGratis(){
+  const email = document.getElementById("reg-user").value.trim().toLowerCase();
+  const pass = document.getElementById("reg-pass").value.trim();
+  const status = document.getElementById("login-status");
+
+  if(!email || !pass){
+    status.innerText = "Informe um e-mail e senha.";
+    return;
+  }
+  if(!validarEmail(email)){
+    status.innerText = "E-mail inválido. Verifique a digitação.";
+    return;
+  }
+
+  status.innerText = "Cadastrando teste de 24h...";
+
+  try {
+    const r = await fetch(`${DB}.json`);
+    const res = await r.json() || {};
+    
+    for(const id in res){
+      if(res[id].user === email){
+        status.innerText = "Este e-mail já está cadastrado.";
+        return alert("Este e-mail já possui cadastro.");
+      }
+    }
+
+    const expTimestamp = Date.now() + (24 * 60 * 60 * 1000);
+    const dataFormatada = new Date(expTimestamp).toLocaleDateString("pt-BR", {
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    });
+
+    const novoUsuario = {
+      user: email,
+      pass: pass,
+      screens: 1,
+      expira: dataFormatada,
+      expira_timestamp: expTimestamp,
+      status: "ativo",
+      role: "client"
+    };
+
+    const postRes = await fetch(`${DB}.json`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(novoUsuario)
+    });
+
+    if(!postRes.ok) throw Error();
+
+    document.getElementById("user").value = email;
+    document.getElementById("pass").value = pass;
+    alternarTelaRegistro(false);
+    autenticar(true);
+
+  } catch(e) {
+    status.innerText = "Erro ao conectar ao Firebase.";
+  }
+}
+
+async function autenticar(isAuto=false){
+  const u = document.getElementById("user").value.trim().toLowerCase(), p = document.getElementById("pass").value.trim(), status = document.getElementById("login-status"), deviceId = obterDeviceId();
+  if(!u||!p){if(!isAuto)status.innerText="Informe e-mail e senha.";return}
+  status.innerText="Verificando acesso...";
+  try{
+    const r = await fetch(`${DB}.json`);
+    if(!r.ok) throw Error();
+    const res = await r.json();
+    let found = false;
+
+    for(const id in (res||{})){
+      const user = res[id];
+      if((user.user||"").toLowerCase() === u && user.pass === p){
+        found = true;
+        if(user.role === "admin"){
+          currentLogged = {...user, adm: true, id};
+        } else {
+          if(user.status === "bloqueado" || user.status === "suspenso"){
+            status.innerText = "ACESSO BLOQUEADO";
+            return alert("Sua conta está bloqueada.");
+          }
+          if(user.expira_timestamp && user.expira_timestamp < Date.now()){
+            status.innerText = "TESTE / ACESSO VENCIDO";
+            return alert("Seu acesso venceu.");
+          }
+          let devices = Array.isArray(user.active_devices) ? user.active_devices : [];
+          if(!devices.includes(deviceId)){
+            if(devices.length >= (Number(user.screens)||1)){
+              status.innerText = "LIMITE DE TELAS";
+              return alert("Limite de telas atingido.");
+            }
+            devices.push(deviceId);
+            await fetch(`${DB}/${id}.json`, {
+              method: "PATCH",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify({active_devices: devices, online_count: devices.length})
+            });
+          }
+          currentLogged = {...user, id, active_devices: devices};
+        }
+        localStorage.setItem("clone_creds", JSON.stringify({u, p}));
+        entrar();
+        break;
+      }
+    }
+    if(!found){
+      status.innerText = "E-mail ou senha incorretos.";
+      if(isAuto) localStorage.removeItem("clone_creds");
+    }
+  }catch(e){
+    status.innerText = "Erro ao conectar ao Firebase.";
+  }
+}
+
+function entrar(){
+  document.getElementById("login-ui").style.display="none";
+  document.getElementById("app-ui").style.display="block";
+  document.getElementById("adm-btn").style.display=currentLogged.adm?"block":"none";
+  const venc = currentLogged.role==="admin" ? "VITALÍCIO" : (currentLogged.expira || "Vitalício");
+  if(relogioInterval)clearInterval(relogioInterval);
+  atualizarRelogio(venc);
+  relogioInterval=setInterval(()=>atualizarRelogio(venc),1000);
+  if(monitorSessaoInterval)clearInterval(monitorSessaoInterval);
+  monitorSessaoInterval=setInterval(verificarSessaoAtiva,20000);
+  mudarSecao("live",document.querySelector(".btn-secao"))
+}
+
+async function verificarSessaoAtiva(){
+  if(!currentLogged.id||currentLogged.role==="admin")return;
+  try{
+    const r=await fetch(`${DB}/${currentLogged.id}.json`),res=await r.json(),device=obterDeviceId();
+    if(!res||res.status==="bloqueado"||res.status==="suspenso"||!Array.isArray(res.active_devices)||!res.active_devices.includes(device)||(res.expira_timestamp&&res.expira_timestamp<Date.now()))forceLogout()
+  }catch(e){}
+}
+
+function forceLogout(){localStorage.removeItem("clone_creds");location.reload()}
+function atualizarRelogio(v){const d=new Date(),dias=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];document.getElementById("welcome-msg").innerHTML=`Olá, <b>${escapeHtml(currentLogged.user||"usuário")}</b> | Vence em: <span>${v}</span><br><small style="color:#888;font-size:10px">${dias[d.getDay()]}, ${d.toLocaleDateString("pt-BR")} - ${d.toLocaleTimeString("pt-BR")}</small>`}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function safeAttr(s){return String(s??"").replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(/[\r\n]/g," ")}
+
+async function mudarSecao(tipo,btn){
+  secaoAtual=tipo;
+  const search=document.getElementById("main-search");
+  if(search)search.value="";
+  if(btn){document.querySelectorAll(".btn-secao").forEach(b=>b.classList.remove("active"));btn.classList.add("active")}
+  if(fullData[tipo]&&cacheCategorias[tipo]){renderizar(cacheCategorias[tipo],fullData[tipo],tipo);return}
+  const main=document.getElementById("conteudo-principal");
+  main.innerHTML='<p style="text-align:center;padding:40px;color:var(--red)">Carregando biblioteca...</p>';
+  const catAct=tipo==="live"?"get_live_categories":tipo==="movie"?"get_vod_categories":"get_series_categories",streamAct=tipo==="live"?"get_live_streams":tipo==="movie"?"get_vod_streams":"get_series";
+  try{
+    const [cr,sr]=await Promise.all([
+      fetch(`${API.url}/player_api.php?username=${encodeURIComponent(API.u)}&password=${encodeURIComponent(API.p)}&action=${catAct}`),
+      fetch(`${API.url}/player_api.php?username=${encodeURIComponent(API.u)}&password=${encodeURIComponent(API.p)}&action=${streamAct}`)
+    ]);
+    if(!cr.ok||!sr.ok)throw Error();
+    const cats=await cr.json(),streams=await sr.json();
+    if(!Array.isArray(cats)||!Array.isArray(streams))throw Error();
+    fullData[tipo]=streams;cacheCategorias[tipo]=cats;renderizar(cats,streams,tipo)
+  }catch(e){main.innerHTML='<p style="text-align:center;padding:35px;color:#aaa">Erro ao carregar IPTV. Verifique a configuração do servidor no Firebase.</p>'}
+}
+
+function renderizar(cats,streams,tipo){
+  let html="";const history=currentLogged.history||{},cont=[];
+  for(const id in history){
+    const h=history[id];if(h.tipo!==tipo)continue;
+    const item=tipo==="series"?streams.find(s=>String(s.series_id)===String(h.seriesParentId)):streams.find(s=>String(s.stream_id)===String(id));
+    if(item&&!cont.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.stream_id)))cont.push(item)
+  }
+  if(cont.length)html+=`<div class="row"><div class="row-header"><span class="row-title" style="color:var(--yellow)">CONTINUAR ASSISTINDO</span><button class="btn-ver-mais" onclick="verMaisHistorico('${tipo}')">VER MAIS</button></div><div class="shelf">${cont.slice(0,10).map(i=>cardHtml(i,tipo)).join("")}</div></div>`;
+  (cats||[]).forEach(cat=>{
+    const items=streams.filter(s=>String(s.category_id)===String(cat.category_id));
+    if(items.length)html+=`<div class="row"><div class="row-header"><span class="row-title">${escapeHtml(cat.category_name)}</span><button class="btn-ver-mais" onclick="verMais('${safeAttr(cat.category_id)}','${safeAttr(cat.category_name)}')">VER MAIS</button></div><div class="shelf">${items.slice(0,10).map(i=>cardHtml(i,tipo)).join("")}</div></div>`
+  });
+  document.getElementById("conteudo-principal").innerHTML=html||'<p style="text-align:center;padding:35px;color:#aaa">Nenhum conteúdo encontrado.</p>'
+}
+
+function verMaisHistorico(tipo){
+  const streams=fullData[tipo]||[],history=currentLogged.history||{},items=[];
+  for(const id in history){
+    const h=history[id];if(h.tipo!==tipo)continue;
+    const item=tipo==="series"?streams.find(s=>String(s.series_id)===String(h.seriesParentId)):streams.find(s=>String(s.stream_id)===String(id));
+    if(item&&!items.some(x=>String(x.series_id||x.stream_id)===String(item.series_id||item.stream_id)))items.push(item)
+  }
+  document.getElementById("conteudo-principal").innerHTML=`<div class="row-header" style="padding:15px"><button onclick="mudarSecao(secaoAtual)" style="background:none;border:0;color:white;font-size:22px">←</button><span class="row-title">CONTINUAR ASSISTINDO</span></div><div class="grid-view">${items.map(i=>cardHtml(i,tipo)).join("")}</div>`;scrollTo(0,0)
+}
+
+function cardHtml(i,tipo){
+  const id=String(i.stream_id||i.series_id||""),favs=currentLogged.favs||[],isFav=favs.some(f=>String(f.id)===id&&f.tipo===tipo),history=currentLogged.history||{};
+  let progress=false,seasonTag="";
+  if(tipo==="series"){
+    const h=Object.values(history).find(x=>String(x.seriesParentId)===id&&x.tipo==="series");
+    if(h){progress=true;seasonTag=`<span class="badge-season">T${escapeHtml(h.season||"")}</span>`}
+  }else if(history[id])progress=true;
+  const img=i.stream_icon||i.cover||i.img||i.movie_image||"",name=i.name||i.title||"Sem título";
+  return `<div class="card ${progress?"in-progress":""}">${progress?'<span class="badge-continue">CONTINUAR</span>':""}${seasonTag}<span class="fav-star ${isFav?"active":""}" title="Adicionar à minha lista" onclick="toggleFav(event,'${safeAttr(id)}','${tipo}','${safeAttr(name)}','${safeAttr(img)}')">★</span><div onclick="abrirConteudo('${safeAttr(id)}','${tipo}')"><img loading="lazy" src="${escapeHtml(img)}" alt="${escapeHtml(name)}" onerror="this.onerror=null;this.src='https://placehold.co/300x450/171a22/ffffff?text=Sem+Foto'"><div class="card-name">${escapeHtml(name)}</div></div></div>`
+}
+
+async function abrirConteudo(id,tipo){
+  if(tipo==="live")return play(id,"m3u8","live");
+  try{
+    const action=tipo==="series"?"get_series_info":"get_vod_info",key=tipo==="series"?"series_id":"vod_id";
+    const r=await fetch(`${API.url}/player_api.php?username=${encodeURIComponent(API.u)}&password=${encodeURIComponent(API.p)}&action=${action}&${key}=${encodeURIComponent(id)}`);
+    if(!r.ok)throw Error();
+    const res=await r.json(),info=res.info||res.movie_data||{},name=info.name||info.title||"Detalhes";
+    let html=`<img src="${escapeHtml(info.cover||info.movie_image||"")}" style="width:160px;border-radius:8px" onerror="this.onerror=null;this.src='https://placehold.co/300x450/171a22/ffffff?text=Sem+Foto'"><h2>${escapeHtml(name)}</h2><p>${escapeHtml(info.plot||"Sinopse não disponível.")}</p>`;
+    if(tipo==="series"){
+      window.tempEps=res.episodes||{};currentSeriesEpisodesData=res.episodes||{};
+      const seasons=Object.keys(window.tempEps),hist=Object.values(currentLogged.history||{}).find(h=>String(h.seriesParentId)===String(id)),last=hist?String(hist.season):seasons[0];
+      html+=`<select id="season-select" class="input-adm" onchange="carregarEps(this.value,'${safeAttr(id)}')">${seasons.map(s=>`<option value="${safeAttr(s)}" ${s===last?"selected":""}>Temporada ${escapeHtml(s)}</option>`).join("")}</select><div id="eps-box" style="margin-top:10px;max-height:360px;overflow-y:auto"></div>`;
+      document.getElementById("detalhes-body").innerHTML=html;document.getElementById("modal-detalhes").style.display="block";carregarEps(last,id);return
+    }else{
+      const h=(currentLogged.history||{})[id],ext=info.container_extension||"mp4";
+      html+=h?`<button onclick="play('${safeAttr(id)}','${safeAttr(ext)}','movie',${Number(h.time)||0})" style="width:90%;padding:15px;background:var(--red);color:white;border:0;margin:8px;border-radius:8px">RETOMAR EM ${Math.floor((Number(h.time)||0)/60)} MIN</button><button onclick="play('${safeAttr(id)}','${safeAttr(ext)}','movie',0)" style="width:90%;padding:12px;background:#333;color:white;border:0;margin:5px">ASSISTIR DO INÍCIO</button>`:`<button onclick="play('${safeAttr(id)}','${safeAttr(ext)}','movie')" style="width:90%;padding:15px;background:var(--red);color:white;border:0">ASSISTIR AGORA</button>`
+    }
+    document.getElementById("detalhes-body").innerHTML=html;document.getElementById("modal-detalhes").style.display="block"
+  }catch(e){alert("Não foi possível carregar os detalhes deste conteúdo.")}
+}
+
+function carregarEps(s,seriesId){
+  if(!s||!window.tempEps?.[s]){const box=document.getElementById("eps-box");if(box)box.innerHTML='<p style="color:#aaa">Nenhum episódio disponível.</p>';return}
+  document.getElementById("eps-box").innerHTML=window.tempEps[s].map(e=>{
+    const id=String(e.id||e.stream_id),h=(currentLogged.history||{})[id],title=e.title||`Episódio ${e.episode_num||""}`;
+    return `<div class="ep-item ${h?"highlight":""}" onclick="prepararEp('${safeAttr(id)}','${safeAttr(e.container_extension||"mp4")}','${safeAttr(seriesId)}','${safeAttr(s)}','${safeAttr(title)}')"><span style="font-size:12px;font-weight:bold">E${escapeHtml(e.episode_num||"")} - ${escapeHtml(title)}</span>${h?`<br><span style="font-size:9px;color:var(--yellow)">PAROU EM ${Math.floor(h.time/60)} MIN</span>`:""}</div>`
+  }).join("")
+}
+
+function prepararEp(id,ext,parent,season,title){
+  const h=(currentLogged.history||{})[id];
+  if(h){
+    document.getElementById("escolha-body").innerHTML=`<h3>${escapeHtml(title)}</h3><button onclick="fecharModalEscolha();play('${safeAttr(id)}','${safeAttr(ext)}','series',${Number(h.time)||0},'${safeAttr(parent)}','${safeAttr(season)}')" style="width:100%;padding:15px;background:var(--red);color:white;border:0;margin-bottom:10px">RETOMAR</button><button onclick="fecharModalEscolha();play('${safeAttr(id)}','${safeAttr(ext)}','series',0,'${safeAttr(parent)}','${safeAttr(season)}')" style="width:100%;padding:12px;background:#333;color:white;border:0">DO INÍCIO</button>`;
+    document.getElementById("modal-escolha-ep").style.display="block"
+  }else play(id,ext,"series",0,parent,season)
+}
+
+function fecharModalEscolha(){document.getElementById("modal-escolha-ep").style.display="none"}
+
+async function play(id,ext,tipo,startTime=0,parent=null,season=null){
+  currentPlayingId=String(id);currentPlayingType=tipo;currentSeriesParent=parent;currentSeason=season;
+  const url=tipo==="live"?`${API.url}/live/${API.u}/${API.p}/${id}.m3u8`:tipo==="movie"?`${API.url}/movie/${API.u}/${API.p}/${id}.${ext||"mp4"}`:`${API.url}/series/${API.u}/${API.p}/${id}.${ext||"mp4"}`;
+  document.getElementById("jump-btns-ui").style.visibility=tipo==="live"?"hidden":"visible";
+  document.getElementById("next-ep-btn-ui").style.display="none";
+  await solicitarWakeLock();
+  document.getElementById("player-box").style.display="block";
+  player.src(tipo==="live"?{src:url,type:"application/x-mpegURL"}:{src:url});
+  player.one("loadedmetadata",()=>{if(startTime>0)try{player.currentTime(startTime)}catch(e){}});
+  player.play().catch(()=>{});
+  if(saveInterval)clearInterval(saveInterval);
+  if(tipo!=="live")saveInterval=setInterval(salvarProgressoFirebase,8000);
+}
+
+player.on("timeupdate",()=>{
+  if(currentPlayingType!=="series")return;
+  const currentTime=player.currentTime()||0,duration=player.duration()||0,nextBtn=document.getElementById("next-ep-btn-ui");
+  if(duration>0){
+    const timeLeft=duration-currentTime;
+    if(timeLeft<=40&&timeLeft>0){if(nextBtn.style.display!=="flex")nextBtn.style.display="flex"}
+    else{if(nextBtn.style.display!=="none")nextBtn.style.display="none"}
+  }
+});
+
+player.on("ended",()=>{if(currentPlayingType==="series")irParaProximoEpisodio()});
+
+function irParaProximoEpisodio(){
+  if(!currentSeriesEpisodesData||!currentSeason||!currentPlayingId)return;
+  const epsList=currentSeriesEpisodesData[currentSeason];if(!Array.isArray(epsList))return;
+  const currentIndex=epsList.findIndex(e=>String(e.id||e.stream_id)===String(currentPlayingId));
+  if(currentIndex>-1&&currentIndex+1<epsList.length){
+    const nextEp=epsList[currentIndex+1];
+    play(String(nextEp.id||nextEp.stream_id),nextEp.container_extension||"mp4","series",0,currentSeriesParent,currentSeason);
+  }else{
+    const seasons=Object.keys(currentSeriesEpisodesData),currentSeasonIdx=seasons.indexOf(String(currentSeason));
+    if(currentSeasonIdx>-1&&currentSeasonIdx+1<seasons.length){
+      const nextSeasonKey=seasons[currentSeasonIdx+1],nextSeasonEps=currentSeriesEpisodesData[nextSeasonKey];
+      if(Array.isArray(nextSeasonEps)&&nextSeasonEps.length>0){
+        play(String(nextSeasonEps[0].id||nextSeasonEps[0].stream_id),nextSeasonEps[0].container_extension||"mp4","series",0,currentSeriesParent,nextSeasonKey);
+      }else fecharPlayer();
+    }else fecharPlayer();
+  }
+}
+
+function pularTempo(s){if(player&&!player.isDisposed()){player.currentTime(Math.max(0,(player.currentTime()||0)+s));player.userActive(true)}}
+
+async function salvarProgressoFirebase(){
+  if(!currentPlayingId||currentPlayingType==="live"||!currentLogged.id)return;
+  const time=Math.floor(player.currentTime()||0),duration=player.duration();
+  if(!duration||!Number.isFinite(duration))return;
+  if(!currentLogged.history)currentLogged.history={};
+  if(time<10||time/duration*100>=95){if(currentLogged.history[currentPlayingId])delete currentLogged.history[currentPlayingId]}
+  else currentLogged.history[currentPlayingId]={time,tipo:currentPlayingType,seriesParentId:currentSeriesParent,season:currentSeason};
+  try{
+    await fetch(`${DB}/${currentLogged.id}/history.json`, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(currentLogged.history)
+    });
+  }catch(e){}
+}
+
+async function fecharPlayer(){
+  if(currentPlayingType!=="live")await salvarProgressoFirebase();
+  if(saveInterval)clearInterval(saveInterval);saveInterval=null;player.pause();liberarWakeLock();
+  document.getElementById("player-box").style.display="none";
+  document.getElementById("next-ep-btn-ui").style.display="none";
+  currentPlayingId=null;currentPlayingType=null;
+  mudarSecao(secaoAtual,document.querySelector(`.btn-secao[onclick*="'${secaoAtual}'"]`))
+}
+
+function abrirConfig(){document.getElementById("modal-config").style.display="block"}
+
+async function redefinirSenha(){
+  const atual=document.getElementById("cfg-pass-atual").value,nova=document.getElementById("cfg-pass-nova").value,conf=document.getElementById("cfg-pass-conf").value;
+  if(!atual||!nova||!conf)return alert("Preencha todos os campos!");
+  if(atual!==currentLogged.pass)return alert("Senha atual incorreta!");
+  if(nova!==conf)return alert("A senha nova e a confirmação não conferem!");
+  if(nova.length<4)return alert("A senha deve ter pelo menos 4 caracteres!");
+  try{
+    await fetch(`${DB}/${currentLogged.id}.json`, {
+      method: "PATCH",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({pass: nova})
+    });
+    currentLogged.pass=nova;
+    localStorage.setItem("clone_creds",JSON.stringify({u:currentLogged.user,p:nova}));
+    alert("Senha alterada com sucesso!");
+    ["cfg-pass-atual","cfg-pass-nova","cfg-pass-conf"].forEach(id=>document.getElementById(id).value="");
+    fecharModais()
+  }catch(e){alert("Erro ao atualizar senha.")}
+}
+
+async function limparHistorico(){
+  if(!confirm("Deseja realmente limpar todo o histórico de Continuar Assistindo?"))return;
+  try{
+    await fetch(`${DB}/${currentLogged.id}/history.json`, {method: "DELETE"});
+    currentLogged.history={};alert("Histórico limpo!");fecharModais();mudarSecao(secaoAtual)
+  }catch(e){alert("Erro ao limpar histórico.")}
+}
+
+async function abrirADM(){
+  if(!currentLogged.adm)return alert("Acesso restrito ao administrador.");
+  document.getElementById("modal-adm").style.display="block";
+  try{
+    const r = await fetch(`${DB}.json`);
+    const res = await r.json();
+    let html="";
+    for(const id in (res||{})){
+      const u=res[id];
+      const ativos=Array.isArray(u.active_devices)?u.active_devices.length:0;
+      const dataVenc = u.expira || "N/A";
+      html+=`<div class="user-card"><b>${escapeHtml(u.user)} (${escapeHtml(u.pass)})</b> <span style="float:right;color:${u.status==="bloqueado"?"#ff5555":"#42d6a0"}">${escapeHtml(u.status||"ativo")}</span><br>Telas: ${ativos}/${Number(u.screens)||1} | Vence: ${dataVenc}<br><br><button class="btn-adm" style="background:#2980b9" onclick="prepararEdicao('${safeAttr(id)}','${safeAttr(u.user)}','${safeAttr(u.pass)}','${Number(u.screens)||1}','${u.expira_timestamp||""}')">Editar / Dias</button><button class="btn-adm" style="background:#8e44ad" onclick="resetarTelas('${safeAttr(id)}')">Reset telas</button><button class="btn-adm" style="background:#d35400" onclick="toggleStatus('${safeAttr(id)}','${safeAttr(u.status||"ativo")}')">Bloq/Lib</button><button class="btn-adm" style="background:#c0392b" onclick="excluirUser('${safeAttr(id)}')">Excluir</button></div>`
+    }
+    document.getElementById("lista-usuarios-adm").innerHTML=html||'<p style="color:#aaa">Nenhum usuário cadastrado.</p>';
+  }catch(e){document.getElementById("lista-usuarios-adm").innerHTML='<p style="color:#f66">Erro ao carregar usuários.</p>';}
+}
+
+async function resetarTelas(id){
+  if(!currentLogged.adm||!confirm("Deseja desconectar todos os aparelhos?"))return;
+  await fetch(`${DB}/${id}.json`, {
+    method: "PATCH",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({active_devices: [], online_count: 0})
+  });
+  alert("Telas liberadas!");abrirADM();
+}
+
+async function logout(){
+  if(currentLogged&&currentLogged.role!=="admin"){
+    try{
+      const device=obterDeviceId(),r=await fetch(`${DB}/${currentLogged.id}.json`),res=await r.json();
+      let devices=Array.isArray(res?.active_devices)?res.active_devices:[];
+      devices=devices.filter(x=>x!==device);
+      await fetch(`${DB}/${currentLogged.id}.json`, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({active_devices: devices, online_count: devices.length})
+      });
+    }catch(e){}
+  }
+  localStorage.removeItem("clone_creds");location.reload();
+}
+
+async function salvarUsuario(){
+  if(!currentLogged.adm)return alert("Acesso restrito.");
+  const id=document.getElementById("edit-id").value,userName=document.getElementById("new-u").value.trim().toLowerCase(),pass=document.getElementById("new-p").value.trim(),days=parseInt(document.getElementById("new-days").value,10),screens=parseInt(document.getElementById("new-screens").value,10)||1;
+  if(!userName||!pass)return alert("Informe e-mail e senha.");
+  if(!validarEmail(userName))return alert("Digite um e-mail válido.");
+
+  let expTimestamp;
+  if(isNaN(days)){
+    expTimestamp = id ? Number(document.getElementById("old-exp").value)||0 : (Date.now() + 30*86400000);
+  }else{
+    let baseTime = (id && days > 0 && Number(document.getElementById("old-exp").value) > Date.now()) ? Number(document.getElementById("old-exp").value) : Date.now();
+    expTimestamp = baseTime + (days * 86400000);
+  }
+
+  const dataFormatada = new Date(expTimestamp).toLocaleDateString("pt-BR", {
+    day: '2-digit', month: '2-digit', year: 'numeric'
+  });
+
+  const user={user:userName,pass,screens,expira:dataFormatada,expira_timestamp:expTimestamp,status:"ativo",role:"client"};
+  try{
+    const url = id ? `${DB}/${id}.json` : `${DB}.json`;
+    const method = id ? "PATCH" : "POST";
+    const r = await fetch(url, {
+      method: method,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(user)
+    });
+    if(!r.ok) throw Error();
+    limparFormADM();await abrirADM();alert("Cliente salvo com sucesso!");
+  }catch(e){alert("Erro ao salvar usuário.");}
+}
+
+async function toggleStatus(id,s){
+  if(!currentLogged.adm)return;
+  await fetch(`${DB}/${id}.json`, {
+    method: "PATCH",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({status: s==="bloqueado"?"ativo":"bloqueado"})
+  });
+  abrirADM();
+}
+
+async function excluirUser(id){
+  if(!currentLogged.adm||!confirm("Excluir este usuário?"))return;
+  await fetch(`${DB}/${id}.json`, {method: "DELETE"});
+  abrirADM();
+}
+
+function prepararEdicao(id,u,p,s,exp){
+  document.getElementById("edit-id").value=id;document.getElementById("new-u").value=u;document.getElementById("new-p").value=p;document.getElementById("new-screens").value=s;document.getElementById("old-exp").value=exp;document.getElementById("new-days").value="";
+  document.getElementById("btn-save-adm").innerText="ATUALIZAR CLIENTE / DIAS";
+  document.getElementById("adm-url")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function limparFormADM(){["edit-id","new-u","new-p","new-days"].forEach(id=>document.getElementById(id).value="");document.getElementById("new-screens").value="1";document.getElementById("old-exp").value="";document.getElementById("btn-save-adm").innerText="SALVAR CLIENTE"}
+
+function executarBusca(q){
+  if(!q.trim()){mudarSecao(secaoAtual,document.querySelector(`.btn-secao[onclick*="'${secaoAtual}'"]`));return}
+  const data=fullData[secaoAtual]||[],term=q.toLocaleLowerCase("pt-BR"),results=data.filter(i=>(i.name||i.title||"").toLocaleLowerCase("pt-BR").includes(term)).slice(0,60);
+  document.getElementById("conteudo-principal").innerHTML=results.length?`<div class="grid-view">${results.map(i=>cardHtml(i,secaoAtual)).join("")}</div>`:'<p style="text-align:center;padding:30px;color:#aaa">Nenhum resultado encontrado.</p>';
+}
+
+async function toggleFav(event,id,tipo,name,img){
+  event.stopPropagation();let f=Array.isArray(currentLogged.favs)?currentLogged.favs:[],idx=f.findIndex(x=>String(x.id)===String(id)&&x.tipo===tipo);
+  if(idx>-1)f.splice(idx,1);else f.push({id:String(id),tipo,name,img});
+  currentLogged.favs=f;event.target.classList.toggle("active",idx<0);
+  try{
+    await fetch(`${DB}/${currentLogged.id}/favs.json`, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(f)
+    });
+  }catch(e){}
+}
+
+function mostrarFavoritos(btn){
+  document.querySelectorAll(".btn-secao").forEach(b=>b.classList.remove("active"));if(btn)btn.classList.add("active");
+  document.getElementById("main-search").value="";const favs=currentLogged.favs||[];
+  document.getElementById("conteudo-principal").innerHTML=favs.length?`<div class="row-header" style="padding:20px 24px 0"><span class="row-title">★ MINHA LISTA</span></div><div class="grid-view">${favs.map(x=>cardHtml({stream_id:x.id,series_id:x.id,name:x.name,img:x.img,stream_icon:x.img,cover:x.img},x.tipo)).join("")}</div>`:'<p style="text-align:center;padding:40px;color:#aaa">Sua lista está vazia. Toque na estrela de um conteúdo para adicioná-lo.</p>';
+}
+
+function verMais(catId,catName){
+  const f=(fullData[secaoAtual]||[]).filter(i=>String(i.category_id)===String(catId));
+  document.getElementById("conteudo-principal").innerHTML=`<div class="row-header" style="padding:15px 24px"><button onclick="mudarSecao(secaoAtual)" style="background:none;border:0;color:white;font-size:22px">←</button><span class="row-title">${escapeHtml(catName)}</span></div><div class="grid-view">${f.map(i=>cardHtml(i,secaoAtual)).join("")}</div>`;scrollTo(0,0);
+}
+
+function fecharModais(){document.querySelectorAll(".modal").forEach(m=>m.style.display="none")}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(document.getElementById("player-box").style.display==="block")fecharPlayer();else fecharModais()}});
+</script>
+</body>
+</html>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#08090d">
 <title>CLONEFLIX ULTRA</title>
