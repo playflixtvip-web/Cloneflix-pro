@@ -182,14 +182,11 @@ function validarEmail(email) {
   return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 }
 
-// Função universal para verificar se a data de expiração já passou
 function checarSeVenceu(expira, expiraTimestamp) {
   if (!expira || expira === "Vitalício" || expira === "N/D") return false;
-  
   if (expiraTimestamp && !isNaN(Number(expiraTimestamp))) {
     return Date.now() > Number(expiraTimestamp);
   }
-
   if (typeof expira === "string" && (expira.includes("/") || expira.includes("-"))) {
     const partes = expira.replace(/-/g, "/").split("/");
     if (partes.length === 3) {
@@ -197,11 +194,9 @@ function checarSeVenceu(expira, expiraTimestamp) {
       return Date.now() > dataExp.getTime();
     }
   }
-
   if (!isNaN(Number(expira))) {
     return Date.now() > Number(expira);
   }
-
   return false;
 }
 
@@ -290,11 +285,14 @@ async function autenticar(isAuto=false){
             status.innerText = "ACESSO VENCIDO";
             return alert("Seu acesso venceu. Entre em contato para renovar!");
           }
+
           let devices = Array.isArray(user.active_devices) ? user.active_devices : [];
+          const maxScreens = Number(user.screens) || 1;
+
           if(!devices.includes(deviceId)){
-            if(devices.length >= (Number(user.screens)||1)){
+            if(devices.length >= maxScreens){
               status.innerText = "LIMITE DE TELAS";
-              return alert("Limite de telas atingido.");
+              return alert("Limite de telas atingido. Outro dispositivo já está conectado com este login.");
             }
             devices.push(deviceId);
             await fetch(`${DB}/${id}.json`, {
@@ -328,16 +326,31 @@ function entrar(){
   atualizarRelogio(venc);
   relogioInterval=setInterval(()=>atualizarRelogio(venc),1000);
   if(monitorSessaoInterval)clearInterval(monitorSessaoInterval);
-  monitorSessaoInterval=setInterval(verificarSessaoAtiva,20000);
+  monitorSessaoInterval=setInterval(verificarSessaoAtiva,25000);
   mudarSecao("live",document.querySelector(".btn-secao"))
 }
 
 async function verificarSessaoAtiva(){
   if(!currentLogged.id||currentLogged.role==="admin")return;
   try{
-    const r=await fetch(`${DB}/${currentLogged.id}.json`),res=await r.json(),device=obterDeviceId();
-    const onlineZerado = (res && (res.online_count === 0 || res.online_count === "0"));
-    if(!res||res.status==="bloqueado"||res.status==="suspenso"||onlineZerado||!Array.isArray(res.active_devices)||!res.active_devices.includes(device)||checarSeVenceu(res.expira, res.expira_timestamp))forceLogout()
+    const r=await fetch(`${DB}/${currentLogged.id}.json`);
+    const res=await r.json();
+    if(!res)return;
+    
+    // Se o status foi bloqueado ou a data venceu
+    if(res.status==="bloqueado"||res.status==="suspenso"||checarSeVenceu(res.expira, res.expira_timestamp)){
+      forceLogout();
+      return;
+    }
+
+    // Se o admin resetou manualmente as telas no Firebase (active_devices sumiu ou online_count virou 0)
+    const devices = Array.isArray(res.active_devices)?res.active_devices:[];
+    const onlineZerado = (res.online_count === 0 || res.online_count === "0" || devices.length === 0);
+
+    if(onlineZerado){
+      forceLogout();
+      return;
+    }
   }catch(e){}
 }
 
