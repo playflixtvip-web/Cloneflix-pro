@@ -64,9 +64,23 @@ header{padding:18px 24px 10px}.header-top{display:flex;align-items:center;justif
     <div style="width:85%;max-width:340px;background:#111;padding:30px;border-radius:10px;text-align:center;border:1px solid #333">
       <h1 style="color:var(--red);margin-bottom:5px">CLONEFLIX</h1>
       <div id="login-status" style="font-size:11px;margin-bottom:15px;color:var(--yellow)">Aguardando credenciais...</div>
-      <input type="text" id="user" placeholder="Usuário / E-mail" class="input-adm" autocomplete="username">
-      <input type="password" id="pass" placeholder="Senha" class="input-adm" autocomplete="current-password">
-      <button onclick="autenticar()" style="width:100%;padding:15px;background:var(--red);color:#fff;border:0;border-radius:5px;font-weight:bold">ENTRAR</button>
+      
+      <!-- Formulário de Login por E-mail e Senha do Cliente -->
+      <div id="form-login-box">
+        <input type="email" id="user" placeholder="E-mail" class="input-adm" autocomplete="username">
+        <input type="password" id="pass" placeholder="Senha" class="input-adm" autocomplete="current-password">
+        <button onclick="autenticar()" style="width:100%;padding:14px;background:var(--red);color:#fff;border:0;border-radius:5px;font-weight:bold;margin-bottom:10px">ENTRAR</button>
+        <button onclick="alternarTelaRegistro(true)" style="width:100%;padding:10px;background:transparent;color:#aaa;border:1px solid #444;border-radius:5px;font-size:11px">Quero Testar Grátis (24h)</button>
+      </div>
+
+      <!-- Formulário de Registro Grátis -->
+      <div id="form-registro-box" style="display:none">
+        <input type="email" id="reg-user" placeholder="Digite seu E-mail" class="input-adm">
+        <input type="password" id="reg-pass" placeholder="Crie uma Senha" class="input-adm">
+        <button onclick="cadastrarTesteGratis()" style="width:100%;padding:14px;background:#27ae60;color:#fff;border:0;border-radius:5px;font-weight:bold;margin-bottom:10px">CRIAR CONTA TESTE (24H)</button>
+        <button onclick="alternarTelaRegistro(false)" style="width:100%;padding:10px;background:transparent;color:#aaa;border:0;font-size:11px">Voltar ao Login</button>
+      </div>
+
     </div>
   </div>
 </div>
@@ -99,7 +113,7 @@ header{padding:18px 24px 10px}.header-top{display:flex;align-items:center;justif
 
 <div id="modal-config" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><div style="max-width:440px;margin:50px auto"><h3 style="color:var(--red);text-align:center">CONFIGURAÇÕES</h3><div class="config-section"><h4 style="margin-top:0">Alterar senha</h4><input type="password" id="cfg-pass-atual" placeholder="Senha atual" class="input-adm"><input type="password" id="cfg-pass-nova" placeholder="Nova senha" class="input-adm"><input type="password" id="cfg-pass-conf" placeholder="Confirmar nova senha" class="input-adm"><button onclick="redefinirSenha()" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">ATUALIZAR SENHA</button></div><div class="config-section"><h4 style="margin-top:0">Privacidade</h4><p style="font-size:12px;color:#aaa">Remove os itens da fileira Continuar Assistindo.</p><button onclick="limparHistorico()" class="btn-danger">LIMPAR HISTÓRICO</button></div></div></div>
 
-<div id="modal-adm" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><h3 style="color:var(--red);text-align:center">PAINEL GESTOR</h3><div style="max-width:650px;margin:25px auto"><div class="config-section" id="adm-form"><h4 style="margin:0 0 12px;color:var(--red)">SERVIDOR IPTV</h4><input type="text" id="adm-url" placeholder="URL DNS" class="input-adm"><input type="text" id="adm-u" placeholder="Usuário IPTV" class="input-adm"><input type="password" id="adm-p" placeholder="Senha IPTV" class="input-adm"><button onclick="salvarConfigServidor()" style="width:100%;padding:12px;background:#27ae60;color:#fff;border:0;border-radius:9px;font-weight:bold">ATUALIZAR DNS</button></div><div class="config-section"><h4 style="margin:0 0 12px">GERENCIAR ACESSO</h4><input type="hidden" id="edit-id"><input type="hidden" id="old-exp"><input type="text" id="new-u" placeholder="Login" class="input-adm"><input type="text" id="new-p" placeholder="Senha" class="input-adm"><input type="text" id="new-exp-data" placeholder="Vencimento (dd/mm/aaaa)" class="input-adm"><input type="number" id="new-screens" placeholder="Limite de telas" class="input-adm" value="1"><button onclick="salvarUsuario()" id="btn-save-adm" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">SALVAR CLIENTE</button></div><div id="lista-usuarios-adm"></div></div></div>
+<div id="modal-adm" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><h3 style="color:var(--red);text-align:center">PAINEL GESTOR</h3><div style="max-width:650px;margin:25px auto"><div class="config-section" id="adm-form"><h4 style="margin:0 0 12px;color:var(--red)">SERVIDOR IPTV (SUPORTA HTTP OU HTTPS)</h4><input type="text" id="adm-url" placeholder="URL DNS (ex: http://exemplo.com:80)" class="input-adm"><input type="text" id="adm-u" placeholder="Usuário IPTV" class="input-adm"><input type="password" id="adm-p" placeholder="Senha IPTV" class="input-adm"><button onclick="salvarConfigServidor()" style="width:100%;padding:12px;background:#27ae60;color:#fff;border:0;border-radius:9px;font-weight:bold">ATUALIZAR DNS</button></div><div class="config-section"><h4 style="margin:0 0 12px">GERENCIAR CLIENTES E DIAS</h4><input type="hidden" id="edit-id"><input type="email" id="new-u" placeholder="E-mail do Cliente" class="input-adm"><input type="text" id="new-p" placeholder="Senha" class="input-adm"><input type="text" id="new-exp-data" placeholder="Vencimento (dd/mm/aaaa)" class="input-adm"><input type="number" id="new-screens" placeholder="Limite de telas" class="input-adm" value="1"><button onclick="salvarUsuario()" id="btn-save-adm" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">SALVAR CLIENTE</button></div><div id="lista-usuarios-adm"></div></div></div>
 
 <div id="modal-detalhes" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><div id="detalhes-body" style="text-align:center;max-width:500px;margin:40px auto;padding-bottom:50px"></div></div>
 <div id="modal-escolha-ep" class="modal" style="z-index:1100;background:#000f"><span class="close-modal" onclick="fecharModalEscolha()">✕</span><div id="escolha-body" style="text-align:center;margin:30vh auto 0;max-width:420px;padding:20px"></div></div>
@@ -185,6 +199,16 @@ async function salvarConfigServidor(){
   }catch(e){alert("Não foi possível salvar a configuração.")}
 }
 
+function alternarTelaRegistro(mostrar){
+  document.getElementById("form-login-box").style.display = mostrar ? "none" : "block";
+  document.getElementById("form-registro-box").style.display = mostrar ? "block" : "none";
+  document.getElementById("login-status").innerText = "";
+}
+
+function validarEmail(email) {
+  return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+}
+
 // Validação de vencimento no formato exato dd/mm/aaaa
 function verificarSeVenceu(expiraStr) {
   if (!expiraStr) return false;
@@ -198,6 +222,65 @@ function verificarSeVenceu(expiraStr) {
   return Date.now() > dataVencimento;
 }
 
+async function cadastrarTesteGratis(){
+  const email = document.getElementById("reg-user").value.trim().toLowerCase();
+  const pass = document.getElementById("reg-pass").value.trim();
+  const status = document.getElementById("login-status");
+
+  if(!email || !pass){
+    status.innerText = "Informe um e-mail e senha.";
+    return;
+  }
+  if(!validarEmail(email)){
+    status.innerText = "E-mail inválido. Verifique a digitação.";
+    return;
+  }
+
+  status.innerText = "Cadastrando teste de 24h...";
+
+  try {
+    const r = await fetch(`${DB}.json`);
+    const res = await r.json() || {};
+    
+    for(const id in res){
+      if(res[id].user === email){
+        status.innerText = "Este e-mail já está cadastrado.";
+        return alert("Este e-mail já possui cadastro.");
+      }
+    }
+
+    const expTimestamp = Date.now() + (24 * 60 * 60 * 1000);
+    const dataFormatada = new Date(expTimestamp).toLocaleDateString("pt-BR", {
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    });
+
+    const novoUsuario = {
+      user: email,
+      pass: pass,
+      screens: 1,
+      expira: dataFormatada,
+      status: "ativo",
+      role: "client"
+    };
+
+    const postRes = await fetch(`${DB}.json`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(novoUsuario)
+    });
+
+    if(!postRes.ok) throw Error();
+
+    document.getElementById("user").value = email;
+    document.getElementById("pass").value = pass;
+    alternarTelaRegistro(false);
+    autenticar(true);
+
+  } catch(e) {
+    status.innerText = "Erro ao conectar ao Firebase.";
+  }
+}
+
 async function autenticar(isAuto = false){
   const u = document.getElementById("user").value.trim().toLowerCase();
   const p = document.getElementById("pass").value.trim();
@@ -205,7 +288,7 @@ async function autenticar(isAuto = false){
   const deviceId = obterDeviceId();
 
   if(!u || !p){
-    if(!isAuto) status.innerText = "Informe usuário e senha.";
+    if(!isAuto) status.innerText = "Informe e-mail e senha.";
     return;
   }
   status.innerText = "Verificando acesso...";
@@ -262,7 +345,7 @@ async function autenticar(isAuto = false){
       }
     }
     if(!found){
-      status.innerText = "Usuário ou senha incorretos.";
+      status.innerText = "E-mail ou senha incorretos.";
       if(isAuto) localStorage.removeItem("clone_creds");
     }
   }catch(e){
@@ -323,7 +406,7 @@ async function mudarSecao(tipo, btn){
     const cats = await cr.json(), streams = await sr.json();
     if(!Array.isArray(cats) || !Array.isArray(streams)) throw Error();
     fullData[tipo] = streams; cacheCategorias[tipo] = cats; renderizar(cats, streams, tipo);
-  }catch(e){main.innerHTML = '<p style="text-align:center;padding:35px;color:#aaa">Erro ao carregar IPTV. Verifique a conexão e as configurações do servidor.</p>'}
+  }catch(e){main.innerHTML = '<p style="text-align:center;padding:35px;color:#aaa">Erro ao carregar IPTV. Verifique se a URL usa http:// corretamente e se o servidor está online.</p>'}
 }
 
 function renderizar(cats, streams, tipo){
@@ -553,11 +636,10 @@ async function salvarUsuario(){
   const expiraStr = document.getElementById("new-exp-data").value.trim();
   const screens = parseInt(document.getElementById("new-screens").value, 10) || 1;
 
-  if(!userName || !pass) return alert("Informe login e senha.");
+  if(!userName || !pass) return alert("Informe e-mail e senha.");
   
   let dataFormatada = expiraStr;
   if(!dataFormatada && !id) {
-    // Padrão de 30 dias à frente se for novo e não informou
     const d = new Date(Date.now() + 30*86400000);
     dataFormatada = d.toLocaleDateString("pt-BR", {day:'2-digit', month:'2-digit', year:'numeric'});
   } else if(!dataFormatada && id) {
