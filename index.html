@@ -113,7 +113,7 @@ header{padding:18px 24px 10px}.header-top{display:flex;align-items:center;justif
 
 <div id="modal-config" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><div style="max-width:440px;margin:50px auto"><h3 style="color:var(--red);text-align:center">CONFIGURAÇÕES</h3><div class="config-section"><h4 style="margin-top:0">Alterar senha</h4><input type="password" id="cfg-pass-atual" placeholder="Senha atual" class="input-adm"><input type="password" id="cfg-pass-nova" placeholder="Nova senha" class="input-adm"><input type="password" id="cfg-pass-conf" placeholder="Confirmar nova senha" class="input-adm"><button onclick="redefinirSenha()" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">ATUALIZAR SENHA</button></div><div class="config-section"><h4 style="margin-top:0">Privacidade</h4><p style="font-size:12px;color:#aaa">Remove os itens da fileira Continuar Assistindo.</p><button onclick="limparHistorico()" class="btn-danger">LIMPAR HISTÓRICO</button></div></div></div>
 
-<div id="modal-adm" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><h3 style="color:var(--red);text-align:center">PAINEL GESTOR</h3><div style="max-width:650px;margin:25px auto"><div class="config-section"><h4 style="margin:0 0 12px;color:var(--red)">SERVIDOR IPTV (LIDO DO FIREBASE)</h4><input type="text" id="adm-url" placeholder="URL DNS" class="input-adm" readonly style="opacity:0.7"><input type="text" id="adm-u" placeholder="Usuário IPTV" class="input-adm" readonly style="opacity:0.7"><input type="password" id="adm-p" placeholder="Senha IPTV" class="input-adm" readonly style="opacity:0.7"><small style="color:#aaa;display:block;margin-top:-5px;margin-bottom:10px">Para alterar o servidor, modifique o nó <b>config/server</b> diretamente no seu Firebase Console.</small></div><div class="config-section"><h4 style="margin:0 0 12px">GERENCIAR CLIENTES E DIAS</h4><input type="hidden" id="edit-id"><input type="hidden" id="old-exp"><input type="email" id="new-u" placeholder="E-mail do Cliente" class="input-adm"><input type="text" id="new-p" placeholder="Senha" class="input-adm"><input type="number" id="new-days" placeholder="Adicionar dias de acesso" class="input-adm"><input type="number" id="new-screens" placeholder="Limite de telas" class="input-adm" value="1"><button onclick="salvarUsuario()" id="btn-save-adm" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">SALVAR CLIENTE</button></div><div id="lista-usuarios-adm"></div></div></div>
+<div id="modal-adm" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><h3 style="color:var(--red);text-align:center">PAINEL GESTOR</h3><div style="max-width:650px;margin:25px auto"><div class="config-section"><h4 style="margin:0 0 12px;color:var(--red)">SERVIDOR IPTV (LIDO DO FIREBASE)</h4><input type="text" id="adm-url" placeholder="URL DNS" class="input-adm" readonly style="opacity:0.7"><input type="text" id="adm-u" placeholder="Usuário IPTV" class="input-adm" readonly style="opacity:0.7"><input type="password" id="adm-p" placeholder="Senha IPTV" class="input-adm" readonly style="opacity:0.7"><small style="color:#aaa;display:block;margin-top:-5px;margin-bottom:10px">Para alterar o servidor, modifique o nó <b>config/server</b> diretamente no seu Firebase Console.</small></div><div class="config-section"><h4 style="margin:0 0 12px">GERENCIAR CLIENTES E DIAS</h4><input type="hidden" id="edit-id"><input type="email" id="new-u" placeholder="E-mail do Cliente" class="input-adm"><input type="text" id="new-p" placeholder="Senha" class="input-adm"><input type="number" id="new-days" placeholder="Adicionar dias de acesso (Ex: 30)" class="input-adm"><input type="number" id="new-screens" placeholder="Limite de telas" class="input-adm" value="1"><button onclick="salvarUsuario()" id="btn-save-adm" style="width:100%;padding:12px;background:var(--red);color:#fff;border:0;border-radius:9px;font-weight:bold">SALVAR CLIENTE</button></div><div id="lista-usuarios-adm"></div></div></div>
 
 <div id="modal-detalhes" class="modal"><span class="close-modal" onclick="fecharModais()">✕</span><div id="detalhes-body" style="text-align:center;max-width:500px;margin:40px auto;padding-bottom:50px"></div></div>
 <div id="modal-escolha-ep" class="modal" style="z-index:1100;background:#000f"><span class="close-modal" onclick="fecharModalEscolha()">✕</span><div id="escolha-body" style="text-align:center;margin:30vh auto 0;max-width:420px;padding:20px"></div></div>
@@ -182,15 +182,20 @@ function validarEmail(email) {
   return String(email).toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 }
 
-// Converte string 'dd/mm/aaaa' para objeto Date (Início do dia ou final)
-function parseDataBR(dataStr) {
-  if (!dataStr) return null;
-  const partes = dataStr.split('/');
-  if (partes.length !== 3) return null;
+// Converte explicitamente a string 'dd/mm/aaaa' para o fim do dia correspondente em milissegundos
+function verificarSeVenceu(expiraStr) {
+  if (!expiraStr) return false;
+  const partes = expiraStr.split('/');
+  if (partes.length !== 3) return false;
   const dia = parseInt(partes[0], 10);
   const mes = parseInt(partes[1], 10) - 1;
   const ano = parseInt(partes[2], 10);
-  return new Date(ano, mes, dia, 23, 59, 59); // Expira no fim do dia informado
+  
+  // Data de vencimento no último segundo do dia (23:59:59)
+  const dataVencimento = new Date(ano, mes, dia, 23, 59, 59).getTime();
+  const agora = Date.now();
+
+  return agora > dataVencimento; // Retorna true se já passou da data de vencimento
 }
 
 async function cadastrarTesteGratis(){
@@ -230,7 +235,6 @@ async function cadastrarTesteGratis(){
       pass: pass,
       screens: 1,
       expira: dataFormatada,
-      expira_timestamp: expTimestamp,
       status: "ativo",
       role: "client"
     };
@@ -275,34 +279,36 @@ async function autenticar(isAuto=false){
             return alert("Sua conta está bloqueada.");
           }
 
-          // Validação rigorosa de Vencimento (dd/mm/aaaa)
-          let dataVencimentoMs = user.expira_timestamp;
-          if(!dataVencimentoMs && user.expira) {
-            const dataObj = parseDataBR(user.expira);
-            if(dataObj) dataVencimentoMs = dataObj.getTime();
-          }
-
-          if(dataVencimentoMs && dataVencimentoMs < Date.now()){
+          // Verificação estrita baseada exclusivamente na string dd/mm/aaaa cadastrada
+          if(verificarSeVenceu(user.expira)){
             status.innerText = "ACESSO VENCIDO";
-            return alert("Sua conta venceu em " + user.expira + ". Renove seu acesso.");
+            return alert("Sua conta venceu em " + (user.expira || "data passada") + ". O acesso não é permitido.");
           }
 
-          let devices = Array.isArray(user.active_devices) ? user.active_devices : [];
-          
-          // Se o dispositivo atual NÃO está na lista, verificamos limite de telas
+          let devices = Array.isArray(user.active_devices) ? [...user.active_devices] : [];
+          const maxTelas = Number(user.screens) || 1;
+
+          // Se este dispositivo ainda não está logado
           if(!devices.includes(deviceId)){
-            const maxTelas = Number(user.screens) || 1;
+            // Remove dispositivos fantasmas/antigos se necessário ou valida estritamente o limite exato
             if(devices.length >= maxTelas){
               status.innerText = "LIMITE DE TELAS ATINGIDO";
-              return alert(`Limite de telas atingido (${maxTelas} tela(s) permitida(s)). Feche o aplicativo em outro aparelho para entrar.`);
+              return alert(`Limite de telas atingido (${maxTelas} tela(s) permitida(s)). Saia de outro aparelho para poder conectar aqui.`);
             }
             devices.push(deviceId);
-            await fetch(`${DB}/${id}.json`, {
-              method: "PATCH",
-              headers: {"Content-Type": "application/json"},
-              body: JSON.stringify({active_devices: devices, online_count: devices.length})
-            });
+          } else {
+            // Se já está na lista, garante que o tamanho não ultrapasse o limite caso o admin tenha alterado
+            if(devices.length > maxTelas) {
+              devices = devices.slice(-maxTelas);
+            }
           }
+
+          await fetch(`${DB}/${id}.json`, {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({active_devices: devices, online_count: devices.length})
+          });
+
           currentLogged = {...user, id, active_devices: devices};
         }
         localStorage.setItem("clone_creds", JSON.stringify({u, p}));
@@ -336,14 +342,8 @@ async function verificarSessaoAtiva(){
   if(!currentLogged.id||currentLogged.role==="admin")return;
   try{
     const r=await fetch(`${DB}/${currentLogged.id}.json`),res=await r.json(),device=obterDeviceId();
-    
-    let dataVencimentoMs = res?.expira_timestamp;
-    if(!dataVencimentoMs && res?.expira) {
-      const dataObj = parseDataBR(res.expira);
-      if(dataObj) dataVencimentoMs = dataObj.getTime();
-    }
 
-    if(!res||res.status==="bloqueado"||res.status==="suspenso"||(dataVencimentoMs&&dataVencimentoMs<Date.now())||!Array.isArray(res.active_devices)||!res.active_devices.includes(device)){
+    if(!res||res.status==="bloqueado"||res.status==="suspenso"||verificarSeVenceu(res.expira)||!Array.isArray(res.active_devices)||!res.active_devices.includes(device)){
       forceLogout();
     }
   }catch(e){}
@@ -562,7 +562,7 @@ async function abrirADM(){
       const u=res[id];
       const ativos=Array.isArray(u.active_devices)?u.active_devices.length:0;
       const dataVenc = u.expira || "N/A";
-      html+=`<div class="user-card"><b>${escapeHtml(u.user)} (${escapeHtml(u.pass)})</b> <span style="float:right;color:${u.status==="bloqueado"?"#ff5555":"#42d6a0"}">${escapeHtml(u.status||"ativo")}</span><br>Telas: ${ativos}/${Number(u.screens)||1} | Vence: ${dataVenc}<br><br><button class="btn-adm" style="background:#2980b9" onclick="prepararEdicao('${safeAttr(id)}','${safeAttr(u.user)}','${safeAttr(u.pass)}','${Number(u.screens)||1}','${u.expira_timestamp||""}')">Editar / Dias</button><button class="btn-adm" style="background:#8e44ad" onclick="resetarTelas('${safeAttr(id)}')">Reset telas</button><button class="btn-adm" style="background:#d35400" onclick="toggleStatus('${safeAttr(id)}','${safeAttr(u.status||"ativo")}')">Bloq/Lib</button><button class="btn-adm" style="background:#c0392b" onclick="excluirUser('${safeAttr(id)}')">Excluir</button></div>`
+      html+=`<div class="user-card"><b>${escapeHtml(u.user)} (${escapeHtml(u.pass)})</b> <span style="float:right;color:${u.status==="bloqueado"?"#ff5555":"#42d6a0"}">${escapeHtml(u.status||"ativo")}</span><br>Telas: ${ativos}/${Number(u.screens)||1} | Vence: ${dataVenc}<br><br><button class="btn-adm" style="background:#2980b9" onclick="prepararEdicao('${safeAttr(id)}','${safeAttr(u.user)}','${safeAttr(u.pass)}','${Number(u.screens)||1}','${safeAttr(u.expira||"")}')">Editar / Dias</button><button class="btn-adm" style="background:#8e44ad" onclick="resetarTelas('${safeAttr(id)}')">Reset telas</button><button class="btn-adm" style="background:#d35400" onclick="toggleStatus('${safeAttr(id)}','${safeAttr(u.status||"ativo")}')">Bloq/Lib</button><button class="btn-adm" style="background:#c0392b" onclick="excluirUser('${safeAttr(id)}')">Excluir</button></div>`
     }
     document.getElementById("lista-usuarios-adm").innerHTML=html||'<p style="color:#aaa">Nenhum usuário cadastrado.</p>';
   }catch(e){document.getElementById("lista-usuarios-adm").innerHTML='<p style="color:#f66">Erro ao carregar usuários.</p>';}
@@ -600,19 +600,25 @@ async function salvarUsuario(){
   if(!userName||!pass)return alert("Informe e-mail e senha.");
   if(!validarEmail(userName))return alert("Digite um e-mail válido.");
 
-  let expTimestamp;
-  if(isNaN(days)){
-    expTimestamp = id ? Number(document.getElementById("old-exp").value)||0 : (Date.now() + 30*86400000);
-  }else{
-    let baseTime = (id && days > 0 && Number(document.getElementById("old-exp").value) > Date.now()) ? Number(document.getElementById("old-exp").value) : Date.now();
-    expTimestamp = baseTime + (days * 86400000);
+  let dataFormatada = "";
+  if(isNaN(days) || days <= 0) {
+    // Se não informou dias novos, mantém a data anterior ou gera 30 dias para novos usuários
+    if(id) {
+      const r = await fetch(`${DB}/${id}.json`);
+      const usr = await r.json();
+      dataFormatada = usr?.expira || new Date(Date.now() + 30*86400000).toLocaleDateString("pt-BR", {day:'2-digit', month:'2-digit', year:'numeric'});
+    } else {
+      dataFormatada = new Date(Date.now() + 30*86400000).toLocaleDateString("pt-BR", {day:'2-digit', month:'2-digit', year:'numeric'});
+    }
+  } else {
+    // Soma dias a partir de hoje (ou renova a partir da data atual)
+    const novoTimestamp = Date.now() + (days * 86400000);
+    dataFormatada = new Date(novoTimestamp).toLocaleDateString("pt-BR", {
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    });
   }
 
-  const dataFormatada = new Date(expTimestamp).toLocaleDateString("pt-BR", {
-    day: '2-digit', month: '2-digit', year: 'numeric'
-  });
-
-  const user={user:userName,pass,screens,expira:dataFormatada,expira_timestamp:expTimestamp,status:"ativo",role:"client"};
+  const user={user:userName,pass,screens,expira:dataFormatada,status:"ativo",role:"client"};
   try{
     const url = id ? `${DB}/${id}.json` : `${DB}.json`;
     const method = id ? "PATCH" : "POST";
@@ -643,12 +649,12 @@ async function excluirUser(id){
 }
 
 function prepararEdicao(id,u,p,s,exp){
-  document.getElementById("edit-id").value=id;document.getElementById("new-u").value=u;document.getElementById("new-p").value=p;document.getElementById("new-screens").value=s;document.getElementById("old-exp").value=exp;document.getElementById("new-days").value="";
+  document.getElementById("edit-id").value=id;document.getElementById("new-u").value=u;document.getElementById("new-p").value=p;document.getElementById("new-screens").value=s;document.getElementById("new-days").value="";
   document.getElementById("btn-save-adm").innerText="ATUALIZAR CLIENTE / DIAS";
   document.getElementById("adm-url")?.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-function limparFormADM(){["edit-id","new-u","new-p","new-days"].forEach(id=>document.getElementById(id).value="");document.getElementById("new-screens").value="1";document.getElementById("old-exp").value="";document.getElementById("btn-save-adm").innerText="SALVAR CLIENTE"}
+function limparFormADM(){["edit-id","new-u","new-p","new-days"].forEach(id=>document.getElementById(id).value="");document.getElementById("new-screens").value="1";document.getElementById("btn-save-adm").innerText="SALVAR CLIENTE"}
 
 function executarBusca(q){
   if(!q.trim()){mudarSecao(secaoAtual,document.querySelector(`.btn-secao[onclick*="'${secaoAtual}'"]`));return}
@@ -681,7 +687,7 @@ function verMais(catId,catName){
 }
 
 function fecharModais(){document.querySelectorAll(".modal").forEach(m=>m.style.display="none")}
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(document.getElementById("player-box").style.display==="block")fecharPlayer();else fecharModais()}});
+document.addEventListener("keydown",e=>{e.key==="Escape"&&(document.getElementById("player-box").style.display==="block"?fecharPlayer():fecharModais())});
 </script>
 </body>
 </html>
